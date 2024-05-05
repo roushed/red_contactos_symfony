@@ -1,0 +1,45 @@
+{# templates/mensajes/mensaje.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mensajes{% endblock %}
+
+{% block body %}
+
+     {% include 'mensajes/mensaje_list.html.twig' %}
+
+     <div class='panel_msg'>
+            {{ form_start(form_mensajes, {'attr': {'id': 'form_mensajes'}}) }}
+            {{ form_row(form_mensajes.texto) }}
+            <button type="submit" id="enviarMensaje">Enviar</button>
+            {{ form_end(form_mensajes) }}
+    </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        const panelDerecho = $('#panel-derecho');
+        panelDerecho.scrollTop(panelDerecho.prop("scrollHeight"));
+     
+        $('#form_mensajes').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(response) {
+                    
+                    $('#lista-usuarios').html(response.html)
+                    $('#form_mensajes textarea').val('');
+                    const panelDerecho = $('#panel-derecho');
+                    panelDerecho.scrollTop(panelDerecho.prop("scrollHeight"));
+                    
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

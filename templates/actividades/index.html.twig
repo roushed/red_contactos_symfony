@@ -1,0 +1,58 @@
+
+{% extends 'base.html.twig' %}
+
+{% set meses = {
+              'January': 'enero',
+              'February': 'febrero',
+              'March': 'marzo',
+              'April': 'abril',
+              'May': 'mayo',
+              'June': 'junio',
+              'July': 'julio',
+              'August': 'agosto',
+              'September': 'septiembre',
+              'October': 'octubre',
+              'November': 'noviembre',
+              'December': 'diciembre'
+          } %}
+
+{% block title %}Actividades{% endblock %}
+
+{% block body %}
+  {% if app.session.get('user_authenticated') %}
+  <div class='act_bar'>
+    <a href="{{path('app_actividades_insertar')}}"><div class='insertar_btn_act'>Publicar Actividad</div></a>
+  </div>
+  {% endif %}
+<div class='actividades'>
+    {% if results %}
+
+      {% for actividad in results %}
+      <p>
+      <div class='cuadro_act'>
+          <a href="/actividades/ver/{{ actividad.id }}"><div class='act_img'><img src='../../image/{{actividad.img}}'></a></div>
+          <div class='actividad'>
+            <div class='apact_izq'>
+              <div class='h5'>{{actividad.nombre}}</div>
+              <div>{{actividad.direccion}}</div>
+              <div>{{actividad.municipio}}</div>             
+            <div>{{ actividad.fecha|date('d') }} {{meses[actividad.fecha|date('F')] }}</div>
+            </div>
+            <div class='apact_der'>
+              <div class='perfil_foto_an'><a href="/usuarios/ver/{{ actividad.id_usuario }}"><img src='../../image/{{actividad.foto_perfil}}'></a></div>
+              <div class='text-center h6 text-dark'>{{actividad.nick}}</div>
+            </div>
+          </div>
+      
+      </div>
+      </p>  
+      {% endfor %}
+
+    {% else %}
+    <p>No se encontraron resultados.</p>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}

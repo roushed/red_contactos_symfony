@@ -1,0 +1,20 @@
+{# templates/mensajes/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mensajes{% endblock %}
+
+{% block body %}
+    <h1>Lista de Últimos Mensajes</h1>
+
+    <ul>
+        {% for mensaje in mensajes %}
+            <li>
+                Usuario: {{ mensaje.usuarioNick }}
+                <br>
+                <a href="{{ path('app_mostrar_mensaje', {'id': mensaje.userId}) }}"> {{ mensaje.textoMensaje }}</a>
+                <br>
+                Fecha: {{ mensaje.fechaMensaje | date('Y-m-d H:i:s') }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

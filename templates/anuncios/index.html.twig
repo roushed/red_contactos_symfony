@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Anuncios Generales{% endblock %}
+
+{% block body %}
+<div class="insertar">
+    {% if app.session.get('user_authenticated') %}
+        <p><a href="{{ path('app_insertar') }}"><div class='insertar_btn'>Publicar Anuncio</div></a></p>
+    {% endif %}
+</div>
+    {% if results %}
+        {% for post in results %}
+            <div class='anunciosg'>
+              <div class='ap_izq'>
+                <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': post.usuario_id})}}"><img src='../../image/{{ post.perfil_foto }}'></a></div>
+                <div class='text-center text-dark h6'>{{ post.usuario_nick }}</div>
+              </div>
+              <div class='ap_der'>
+                <div><a href="{{ path('app_porcategoria_ver', {'id': post.id}) }}">{{ post.subject }}</a></div>
+                <div class='categoria'>{{ post.categoria_nombre }}</div>
+                <div class='fecha'>{{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }}</div>
+              </div>
+            </div>
+        {% endfor %}
+
+      
+        <div class="pagination">
+          {% if currentPage > 1 %}
+              <div class="pagination-item">
+                  <a href="{{ path('app_listar', {'page': currentPage - 1}) }}">Anterior</a>
+              </div>
+          {% endif %}
+          
+          {% for page in 1..totalPages %}
+              <div class="pagination-item {% if page == currentPage %}active{% endif %}">
+                  <a href="{{ path('app_listar', {'page': page}) }}">{{ page }}</a>
+              </div>
+          {% endfor %}
+          
+          {% if currentPage < totalPages %}
+              <div class="pagination-item">
+                  <a href="{{ path('app_listar', {'page': currentPage + 1}) }}">Siguiente</a>
+              </div>
+          {% endif %}
+      </div>
+    {% else %}
+        <p>No se encontraron resultados.</p>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,14 @@
+
+{% for mensaje in conversacion %}
+    {% set claseMensaje = mensaje.nickenvia.id == usuario_actual.id ? 'mensaje-usuario-actual' : 'mensaje-otro-usuario' %}
+    <div class="{{ claseMensaje }}">
+        <strong>{% if mensaje.nickenvia.id != usuario_actual.id %}{{ mensaje.nickenvia.nick }}{% endif %}</strong>
+        <div>{{ mensaje.texto}}</div>
+        <br>
+    </div>
+{% else %}
+    <p>No hay mensajes en la conversación.</p>
+{% endfor %}
+
+
+            

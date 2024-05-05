@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class='divis'>
+        <form method="post" action="{{ path('app_login') }}">
+      
+            <div class="field-container">
+                <div class='div_user'>
+                    <img src="{{ asset('image/mail.png') }}" alt="Correo Icon">
+                </div>
+                <div>
+                    {{ form_row(form.nick, {'attr': {'class': 'form-field'}}) }}
+                </div>
+               
+            </div>
+
+            <div class="field-container">
+                <div>
+                    <img src="{{ asset('image/pass.png') }}" alt="Contraseña Icon">
+                </div>
+                <div>
+                    {{ form_row(form.password, {'attr': {'class': 'form-field'}}) }}
+                </div>
+            </div>
+            <button type="submit">Iniciar Sesión</button>
+        
+        </form>
+        
+        {% if app.session.flashBag.has('error') %}
+            <div class="text-danger">
+                {{ app.session.flashBag.get('error')[0] }}
+            </div>
+        {% endif %}
+        <p><a href="{{ path('app_registrar') }}"> Registro</a></p>
+    </div>
+{% endblock %}

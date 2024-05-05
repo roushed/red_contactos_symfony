@@ -1,0 +1,86 @@
+{% block styles %}
+    <style>
+        .usuario {
+            cursor: pointer; 
+        }
+    </style>
+{% endblock %}
+                {% for usuario in usuariosInteractuados %}
+                   
+                        <div class="usuario" id="usuario_{{ usuario[0].id }}" data-id="{{ usuario[0].id }}">
+                        {% if usuario[0].online %}
+                            <span class='online_msg'><img src='../../image/pverde.png'></span>
+                        {% endif %}
+                        <img src='../../image/{{usuario['foto']}}'>{{ usuario[0].nick }}
+                            {% if usuario['mensajes_no_leidos'] > 0 %}
+                                <span class="badge">{{ usuario['mensajes_no_leidos'] }}</span>
+                            {% endif %}
+                        </div>
+                    
+                {% endfor %}
+            
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+$(document).ready(function() {
+
+    $('.usuario').click(function() {
+
+        const usuarioId = $(this).data('id');
+        
+        actualizarListaUsuarios(usuarioId);
+        $('#lista-usuarios').attr('data-id-usuario-seleccionado', usuarioId); 
+       $('#usuario_' + usuarioId).css('background-color', 'gray'); 
+         
+        cargarConversacion(usuarioId);
+        
+    });
+
+    function mostrarFormularioMensaje(mostrar) {
+        if (mostrar) {
+            $('#form_mensajes').show();
+        } else {
+            $('#form_mensajes').hide();
+        }
+    }
+
+   
+    function cargarConversacion(usuarioId) {
+        $.ajax({
+            url: '/cargar_conversacion/' + usuarioId,
+            method: 'GET',
+            success: function(data) {
+                $('#conversacion').html(data);
+               
+                var panelDerecho = $('#panel-derecho');
+                panelDerecho.scrollTop(panelDerecho.prop("scrollHeight"));
+                mostrarFormularioMensaje(true);
+            },
+            error: function() {
+                console.error('Error al cargar la conversación.');
+            }
+        });
+    }
+
+    function actualizarListaUsuarios(usuarioId) {
+        $.ajax({
+            url: '/actualizar_lista_usuarios',
+            method: 'GET',
+            success: function(data) {
+                $('#list_usuarios').html(data);
+                $('#usuario_' + usuarioId).css('background-color', 'gray'); 
+                
+               
+            },
+            error: function() {
+                console.error('Error al actualizar la lista de usuarios.');
+            }
+        });
+    }
+    
+
+});
+
+
+</script>

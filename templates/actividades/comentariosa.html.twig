@@ -1,0 +1,19 @@
+
+{% if comentarios %}
+    <table class="table table-striped tabla_com">
+        <tbody>
+            {% for comentario in comentarios %}
+                <tr>
+                    <td width='10%'>
+                        <img src="../../image/{{comentario.foto}}" alt="Foto de perfil" style="width: 45px; height: 45px; margin-right: 2px; border-radius: 6px;"><br>
+                        <b style="margin-left: 4px;">{{ comentario.nick }}</b>
+                    </td>
+                    <td>{{ comentario.texto }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No hay comentarios</p>
+{% endif %}
+

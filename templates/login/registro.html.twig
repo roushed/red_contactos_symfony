@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+ <div class='insertar_ag'>
+
+   <h2>Registro:</h2>
+
+    {{ form_start(form) }}
+
+ 
+    <div class="form-group">
+        {{ form_label(form.nick) }}
+        {{ form_widget(form.nick, {'attr': {'class': 'form-control'}}) }}
+        <span class='text-danger'>{{ form_errors(form.nick) }}</span> 
+    </div>
+    {{ form_row(form.password, {'attr': {'class': 'form-control'}}) }}
+    <span class='text-danger'>{{ form_errors(form.password) }} </span>
+
+   
+   
+    {% set perfilForm = form.perfil %}
+
+   
+     <div class="form-group">
+        {{ form_label(perfilForm.nombre) }}
+        {{ form_widget(perfilForm.nombre, {'attr': {'class': 'form-control'}}) }}
+        <span class='text-danger'>{{ form_errors(perfilForm.nombre) }}</span> 
+    </div>
+    <div class="form-group">
+        {{ form_label(perfilForm.apellidos) }}
+        {{ form_widget(perfilForm.apellidos, {'attr': {'class': 'form-control'}}) }}
+        <span class='text-danger'>{{ form_errors(perfilForm.apellidos) }}</span> 
+    </div>
+
+    <div class="form-group">
+        {{ form_label(perfilForm.email) }}
+        {{ form_widget(perfilForm.email, {'attr': {'class': 'form-control'}}) }}
+        <span class='text-danger'>{{ form_errors(perfilForm.email) }}</span> 
+    </div>
+    <div class="form-group">
+        {{ form_label(perfilForm.edad) }}
+        {{ form_widget(perfilForm.edad, {'attr': {'class': 'form-control'}}) }}
+         <span class='text-danger'>{{ form_errors(perfilForm.edad) }}</span> 
+    </div>
+    <div class="form-group">
+        <div class="form-check form-check-inline">
+            {{ form_widget(perfilForm.genero[0]) }}
+            {{ form_label(perfilForm.genero[0], 'Hombre', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+        <div class="form-check form-check-inline">
+            {{ form_widget(perfilForm.genero[1]) }}
+            {{ form_label(perfilForm.genero[1], 'Mujer', {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(perfilForm.ciudad) }}
+        {{ form_widget(perfilForm.ciudad, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(perfilForm.descripcion) }}
+        {{ form_widget(perfilForm.descripcion, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+        <div class="form-group">
+        {{ form_label(perfilForm.foto) }}
+        {{ form_widget(perfilForm.foto, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <h5>Aficiones:</h5>
+    <div class="aficiones-container">
+      
+        {% for aficion in perfilForm.aficiones %}
+            <div class="aficion-checkbox" onclick="toggleCheckbox(this)">
+                {{ form_widget(aficion) }}
+                {{ form_label(aficion) }}
+            </div>
+        {% endfor %}
+</div>
+
+    <button type="submit">Registrar</button>
+
+    {{ form_end(form) }}
+    </div>
+    <script>
+        function toggleCheckbox(element) {
+            var checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked; 
+
+            if (checkbox.checked) {
+                element.classList.add('selected'); 
+            } else {
+                element.classList.remove('selected'); 
+            }
+        }
+    </script>
+
+
+{% endblock %}

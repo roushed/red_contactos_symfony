@@ -1,0 +1,30 @@
+{# templates/mensajes/_mensaje_list.html.twig #}
+
+<div id="lista-usuarios" data-id-usuario-seleccionado="">
+    <div class="panel">
+        <div class="panel-izquierdo" id="list_usuarios">
+            <div class="usuario bg-secondary">
+                <img src='../../image/{{usuario_recibo.perfil.foto}}'>{{ usuario_recibo.nick }}
+            </div>
+           
+        </div>
+        <div class="panel-derecho" id="panel-derecho">
+            <div id="conversacion">
+                {% for mensaje in mensajes_u %}
+       
+                    {% set claseMensaje = mensaje.nickenvia.id == usuario_actual.id ? 'mensaje-usuario-actual' : 'mensaje-otro-usuario' %}
+                        <div class="{{ claseMensaje }}">
+                            <strong>{% if mensaje.nickenvia.id != usuario_actual.id %}{{ mensaje.nickenvia.nick }}{% endif %}</strong>
+                            <div>{{ mensaje.texto}}</div>
+                            <br>
+                        </div>
+                {% else %}
+                        <p>No hay mensajes en la conversación.</p>
+                      
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+</div>
+

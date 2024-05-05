@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.2"
+  },
+  "scripts": {
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^4.6.1"
+  }
+}

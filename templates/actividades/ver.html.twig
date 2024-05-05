@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% set meses = {
+              'January': 'enero',
+              'February': 'febrero',
+              'March': 'marzo',
+              'April': 'abril',
+              'May': 'mayo',
+              'June': 'junio',
+              'July': 'julio',
+              'August': 'agosto',
+              'September': 'septiembre',
+              'October': 'octubre',
+              'November': 'noviembre',
+              'December': 'diciembre'
+          } %}
+
+{% block title %}Ver Actividad{% endblock %}
+
+{% block body %}
+
+{% if results %}
+
+    {% for actividad in results %}
+    <p>
+        <div class="ver_actividad">
+            <div class='actver_izq'>
+                <div class='imagen_act'><img src='../../image/{{actividad.img}}'></div> 
+                <div class='recuadro_act'>
+                    <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': actividad.idusuario})}}"><img src='../../image/{{actividad.foto_perfil}}'></a></div>
+                    <div class='creador_act text-primary h6'>{{actividad.nick}}</div>
+                    
+                    {% if app.session.get('user_authenticated') %}
+                        {% if app.session.get('nombre') != actividad.nick %}
+                        <div class='inscribir_btn'>
+                         
+                            {% if inscrito %}
+                                <div class='btn_inscribir'><a href="{{ path('app_actividades_ver', {'id': actividad.id, 'action': 'desinscribir'}) }}">Desinscribirse</a></div>
+
+                            {% else %}
+                                <div class='btn_inscribir'><a href="{{ path('app_actividades_ver', {'id': actividad.id, 'action': 'inscribir'}) }}">Inscribirse</a></div>
+                            {% endif %}
+                    </div>
+                        {% endif %}
+                    {% endif %}
+                </div>             
+            </div>
+            <div class='actver_der'>
+                <div class='h2'>{{actividad.nombre}}</div>
+                <div class='act_props'>
+                     <span class='ico_act'><img src='../../image/ico_calen.png'></span> 
+                    <span class='txt_act'>{{ actividad.fecha|date('d') }} {{meses[actividad.fecha|date('F')] }} {{ actividad.fecha|date('Y') }}</span>
+                </div>
+               <div class='act_props'>
+                     <span class='ico_act'><img src='../../image/ico_ub.png'></span> 
+                    <span class='txt_act'>{{actividad.direccion}}</span>
+                </div>
+                 <div class='act_props'>
+                     <span class='ico_act'><img src='../../image/ico_hora.png'></span> 
+                    <span class='txt_act'>{{ actividad.hora|date('H:i') }}</span>
+                </div>
+                <div class='act_props'>
+                     <span class='ico_act'><img src='../../image/localidad.png'></span> 
+                    <span class='txt_act'>{{actividad.municipio}}</span>
+                </div>
+
+                   
+                
+                <p>Total de usuarios inscritos: {{ results_u|length }}</p>
+                <div class='inscritos'>             
+                   
+                        {% for usuario in results_u %}
+                            <div class='user_inscrito'>
+                                <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': usuario.id})}}"><img src='../../image/{{usuario.foto_perfil}}'></a></div>
+                                <div class='text-center h6 text-dark'>{{usuario.nick}}</div>
+                            </div>
+                        {% endfor %}
+                  
+                </div>
+                <div class='h2'>Info:</div>
+                <div class='descripcion_act'>{{actividad.descripcion}}</div>
+                
+
+    {% endfor %}
+              
+            
+    </p>
+     {% for actividad in results %}
+     {% if app.session.get('user_authenticated') %}
+        {% if inscrito %}
+        <h2>Comentarios:</h2>
+        <div class='com_act' id="comentarios-section_act">
+        {% include 'actividades/comentariosa.html.twig' %}
+        </div>
+            
+            <form class="ajax-form" action="{{ path('app_actividades_ver', {'id': actividad.id}) }}" method="post">
+                {{ form_row(form_comentarios.texto) }}
+                <button type="submit" class='btn_agregar'>Agregar</button>
+            </form>
+
+        {% endif %}
+
+        
+    
+    {% endif %}
+    {% endfor %}
+    
+  {% else %}
+  <p>No se encontraron resultados.</p>
+  {% endif %}
+          </div>
+        </div>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.ajax-form').submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                   
+                    $('#comentarios-section_act').html(data.comentarios);
+                    $('.ajax-form textarea').val('');
+                }
+            });
+        });
+    });
+</script>
+  
+{% endblock %}
+
+

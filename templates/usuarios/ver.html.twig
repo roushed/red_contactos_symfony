@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ver Anuncio{% endblock %}
+
+{% block body %}
+
+    {% for usuario in results %}
+        <p>
+        <div class="perfilg">
+            <div class="cuadro_perfil">
+                <div class="perfil_iz">
+                    <div><img src='../../image/{{usuario.foto}}'></div>
+                </div>
+
+                <div class="perfil_der">
+                    <h1>{{usuario.nick}}</h1>
+                    {% set today = 'now'|date('Y-m-d') %}
+                    {% set birthdate = usuario.edad|date('Y-m-d') %}
+                    {% set age = (today|date('Y') - birthdate|date('Y'))|trim('0', 'left') %}
+                    <div class='div_age'> 
+                        <span class='ico_age'><img src='../../image/age.png'></span> 
+                        <span class='age'>{{ age }}</span>
+                    </div>
+                    {% if usuario.genero == 'H'%}
+                        <div class='div_gen'><span class='ico_age'><img src='../../image/icon_h.png'></span> <span class='age'>Hombre</span></div>
+                    {% else %}
+                        <div class='div_gen'><span class='ico_age'><img src='../../image/icon_m.png'></span><span class='age'>Mujer</span></div>
+                    {% endif %}
+                    
+                    <div>
+                     <span class='ico_age'><img src='../../image/localidad.png'></span> 
+                    <span class='age'>{{usuario.ciudad}}</span>
+                    </div>
+                    <div class='user_online_ver'>
+                        {% if usuario.online %}
+                            <div><img src='../../image/pverde.png'> Online</div>
+                        {% else %}
+                            {% if ultima_v != null %}
+                                <div class='bg-dark text-white text-center rounded p-1 custom-width'>{{ ultima_v }}</div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    
+                    {% if app.session.get('user_authenticated') %}
+                        <div class='btn_msg'><a href="{{ path('app_mostrar_mensaje', {'id': usuario.id}) }}">Enviar Mensaje</a></div>
+                    {% endif %}
+       
+                </div>
+            </div>
+            <div class='perfil_desc'>
+                <div class='h3'>Descripción:</div>
+                <div class='w-75'>{{usuario.descripcion}}</div>
+                <div>
+                    <div class='h3 mt-3'>Intereses:</div>
+                    <div class='perfil_af'>
+                        {% for aficion in aficiones %}
+                            <div>{{aficion.nombre}}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+        </p>
+
+{% endblock %}

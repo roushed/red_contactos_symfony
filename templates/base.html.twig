@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}¡Bienvenido!{% endblock %}</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ absolute_url(asset('assets/styles/app.css')) }}">
+    {% endblock %}
+</head>
+<body>
+{% set meses = {
+              'January': 'enero',
+              'February': 'febrero',
+              'March': 'marzo',
+              'April': 'abril',
+              'May': 'mayo',
+              'June': 'junio',
+              'July': 'julio',
+              'August': 'agosto',
+              'September': 'septiembre',
+              'October': 'octubre',
+              'November': 'noviembre',
+              'December': 'diciembre'
+} %}
+<div class="container">
+    <div class="bg-black p-3"><h2 class='text-white'>ConnectPeople</h2></div>
+    <div class="portada"></div>
+    <div class="bg-black p-2 secciones">
+        <p>
+            <div class="seccion"><a href="{{ path('app_listar') }}">Anuncios Generales</a></div>
+            <div class="seccion"><a href="{{ path('app_anuncios_categoria') }}">Categorías</a></div>
+            <div class="seccion"><a href="{{ path('app_actividades') }}">Actividades</a></div>
+            <div class="seccion"><a href="{{ path('app_eventos') }}">Eventos</a></div>
+            <div class="seccion"><a href="{{ path('app_usuarios') }}">Usuarios</a></div>
+        </p>
+        {% if app.session.get('user_authenticated') %}
+        <div class="login">
+            <a href="{{ path('app_mensajesav') }}">
+                <span class="icon_msg">
+                    <img src="../../image/icon_msg.png">
+                    <span class="num_msgs" id="numMensajesSpan">0</span>
+                </span>
+            </a>
+            <span class="icon_logout">
+                <a href="{{ path('app_logout') }}">
+                    <img src="../../image/cerrar_s.jpg">
+                </a>
+            </span>
+            <span class='image_sesion'>
+                <img src="../../image/{{ app.session.get('imagen') }}">
+            </span>
+            <div class='s_nick'>
+            Bienvenido/a {{ app.session.get('nombre') }}
+            </div>
+        </div>
+        {% else %}
+        <div class='login_text'><a href="{{ path('app_login') }}">Login</a></div>
+        {% endif %}
+    </div>
+    <div class="contenido">
+        {% block body %}{% endblock %}
+    </div>
+    <div class="bg-black p-3 pie"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        
+        $.get("{{ path('num_mensajes') }}", function(data) {
+            
+            $('#numMensajesSpan').text(data);
+        });
+    });
+</script>
+</body>
+</html>

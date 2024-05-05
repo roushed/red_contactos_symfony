@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block title %}Registrar Actividad{% endblock %}
+
+{% block body %}
+<div class='insertar_ag'>
+    <h1>Crear Actividad</h1>
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.nombre) }}
+        {{ form_widget(form.nombre, {'attr': {'class': 'form-control'}}) }}
+           <span class='text-danger'>{{ form_errors(form.nombre) }}</span> 
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.descripcion) }}
+        {{ form_widget(form.descripcion, {'attr': {'class': 'form-control'}}) }}
+           <span class='text-danger'>{{ form_errors(form.descripcion) }}</span> 
+    </div>
+
+        <div class="form-group">
+        {{ form_label(form.imagen) }}
+        {{ form_widget(form.imagen, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.fecha) }}
+        {{ form_widget(form.fecha, {'attr': {'class': 'form-control'}}) }}
+        <span class='text-danger'>{{ form_errors(form.fecha) }}</span> 
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.hora) }}
+        {{ form_widget(form.hora, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.direccion) }}
+        {{ form_widget(form.direccion, {'attr': {'class': 'form-control'}}) }}
+           <span class='text-danger'>{{ form_errors(form.direccion) }}</span>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.municipio) }}
+        {{ form_widget(form.municipio, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <button class="btn btn-dark">{{ button_label|default("Publicar") }}</button>
+
+    {{ form_end(form) }}
+</div>
+
+<p><a href="">Volver</a></p>
+{% endblock %}

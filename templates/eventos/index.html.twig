@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Eventos{% endblock %}
+
+{% block body %}
+    <div class="containerev">
+        <h1>Listado de Eventos</h1>
+        {% if eventos is not empty %}
+            {% for evento in eventos %}
+                <div class="evento">
+                    <div class="evento-imagen">
+                        <img src='../../image/{{evento.imagen}}' alt="{{ evento.nombre }}">
+                    </div>
+                    <div class="evento-info">
+                        <h2>{{ evento.nombre }}</h2>
+                        <p><strong>Fecha:</strong> {{ evento.fecha|date('d') }} {{meses[evento.fecha|date('F')] }} {{ evento.fecha|date('Y') }}</p>
+                        <p><strong>Hora:</strong> {{ evento.hora|date('H:i') }}</p>
+                        <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+                        <p><strong>Dirección:</strong> {{ evento.direccion }}</p>
+                        <p><strong>Municipio:</strong> {{ evento.municipio }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay eventos disponibles.</p>
+        {% endif %}
+    </div>
+{% endblock %}

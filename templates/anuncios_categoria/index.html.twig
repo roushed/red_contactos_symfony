@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorias{% endblock %}
+
+{% block body %}
+<div class='categorias'>
+
+  {% if results %}
+
+    {% for categoria in results %}
+    <p>
+    <div class='cat_img'>
+      
+        <div><a href="{{ path('app_porcategoria', {'id': categoria.id})}}"><img src='../../image/{{categoria.img}}'></a></div>
+        <div class='texto_cat'>{{categoria.nombre}}</div>
+        
+    </div>
+    </p>  
+    {% endfor %}
+
+  {% else %}
+  <p>No se encontraron resultados.</p>
+  {% endif %}
+
+</div>
+{% endblock %}

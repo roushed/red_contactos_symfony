@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Ver Anuncio{% endblock %}
+
+{% block body %}
+{% if post.categoria.id != 7 and post.categoria.id != 8 %}
+<div class='ver_anuncio'>
+    <div class='vera_izq'>
+        <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': id_nick})}}"><img src='../../image/{{perfil.foto}}'></a></div>
+        <div class='text-center text-primary h6'>{{nick}}</div>
+    </div>
+    <div class='vera_der'>
+        <div class='h3 mt-3'>{{post.subject}}</div>
+        <div class='texto_a'>{{post.texto}}</div>
+        <div class='fecha_va'>{{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }} {{ post.fecha|date('Y') }}</div>
+        <h2>Comentarios:</h2>
+        <div class="comentarios" id="comentarios-section">
+
+            {% include 'anuncios_categoria/comentarios.html.twig' %}
+                     
+                            
+        </div>
+
+        {% if app.session.get('user_authenticated') %}
+                   
+                        <form class="ajax-form" action="{{ path('app_porcategoria_ver', {'id': post.id}) }}" method="post">
+                            {{ form_row(form_comentarios.texto) }}
+                            <button type="submit" class='btn_agregar'>Agregar</button>
+                        </form>
+                
+                    
+        {% endif %}
+
+    </div>
+     
+</div>
+    {% else %}
+
+        <p>
+            <div class="ver_actividad">
+                <div class='actver_izq'>
+                    <div class='imagen_act'><img src='../../image/{{post.imagen}}'></div> 
+                    <div class='recuadro_act'>
+                        <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': id_nick})}}"><img src='../../image/{{perfil.foto}}'></a></div>
+                        <div class='creador_act text-primary h6'>{{nick}}</div>
+                            {% if app.session.get('user_authenticated') %}
+                                <div class='inscribir_btn'>
+                                    <div class='btn_inscribir'><a href="{{ path('app_mostrar_mensaje', {'id': id_nick}) }}">Enviar Mensaje</a></div>
+                                </div>
+                            {% endif %}
+                    </div>             
+                </div>
+                <div class='actver_der'>
+                    <div class='h4'>{{post.subject}}</div>
+                     <div class='h3 precio2'>{{post.precio}} €</div>
+                    <div class='h2'>Info:</div>
+                    <div class='descripcion_act'>{{post.texto}}</div>
+                    {% if post.categoria.id != 8 %}
+                        <div class='act_props'>
+                     <span class='ico_act'><img src='../../image/localidad.png'></span> 
+                    <span class='txt_act'>{{perfil.ciudad}}</span>
+                </div>
+                    {% endif %}
+                     <div>Publicado {{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }} {{ post.fecha|date('Y') }}</div>
+                </div>
+            </div>
+        </p>
+
+     {% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.ajax-form').submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    
+                    $('#comentarios-section').html(data.comentarios);
+                    $('.ajax-form textarea').val('');
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

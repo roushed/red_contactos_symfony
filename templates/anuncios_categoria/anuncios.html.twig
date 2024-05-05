@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Anuncios por categoría{% endblock %}
+
+{% block body %}
+
+  {% if results %}
+    
+    {% if id_categoria == 7 or id_categoria == 8 %}
+     <div class='texto_categoria_a'>
+        <div class='t_cat'> {{ncategoria}}</div>
+        <div class='t_desc'> {{descripcion}}</div>
+      </div>
+    <div class='bar_anuncios'>
+      <div class="insertar_a">
+       {% if app.session.get('user_authenticated') %}
+          <a href="{{ path('app_porcategoria_insertar', {'id': id_categoria})}}"><div class='insertar_btn' >Publicar Anuncio</div></a>
+        {% endif %}
+      </div>
+      <div class="busqueda_a">
+                  <input type="text" id="texto-busqueda" placeholder="Introduce tu búsqueda" style="padding: 5px; border: 1px solid black; border-radius: 6px; font-size: 16px;">
+                  <button id="btn-buscar" data-categoria="{{ id_categoria }}" style="background-color: black; color: white; padding: 6px 11px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; transition: background-color 0.3s, color 0.3s;">Buscar</button>
+      </div>
+    </div>
+    
+    <div class='actividades'>
+            {% for post in results %}
+                <div class='cuadro_act'>
+                    <a href="{{ path('app_porcategoria_ver', {'id': post.id}) }}">
+                        <div class='an_img'><img src='../../image/{{post.imagen}}'></div>
+                    </a>
+                    <div class='actividad'>
+                        <div class='apact_izq'>
+                            <div class='h5'>{{post.subject}}</div>
+                            <div>{{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }}</div>
+                        </div>
+                        <div class='apact_der'>
+                            <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': post.usuario_id})}}"><img src='../../image/{{post.perfil_foto}}'></a></div>
+                            <div class='text-center h6 text-dark'>{{post.usuario_nick}}</div>
+                            <div class='precio h6'>{{post.precio}} €</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}  
+        </div>
+      {% else %}
+      <div class='texto_categoria'>
+        <div class='t_cat'> {{ncategoria}}</div>
+        <div class='t_desc'> {{descripcion}}</div>
+      </div>
+      <div class='bar_anuncios'>
+        <div class="insertar">
+        {% if app.session.get('user_authenticated') %}
+            <a href="{{ path('app_porcategoria_insertar', {'id': id_categoria})}}"><div class='insertar_btn' >Publicar Anuncio</div></a>
+          {% endif %}
+        </div>
+        <div class="busqueda">
+                  <input type="text" id="texto-busqueda" placeholder="Introduce tu búsqueda" style="padding: 5px; border: 1px solid black; border-radius: 6px; font-size: 16px;">
+                  <button id="btn-buscar" data-categoria="{{ id_categoria }}" style="background-color: black; color: white; padding: 6px 11px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; transition: background-color 0.3s, color 0.3s;">Buscar</button>
+        </div>
+      </div>
+      <div class='contenido_anuncio'>
+          {% for post in results %}
+          <div class='anunciosg'>
+            <div class='ap_izq'>
+              <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': post.usuario_id})}}"><img src='../../image/{{post.perfil_foto}}'></a></div>
+              <div class='text-center text-dark h6'>{{ post.usuario_nick }}</div>
+            </div>
+            <div class='ap_der'>
+              <div><a href="{{ path('app_porcategoria_ver', {'id': post.id}) }}">{{ post.subject }}</a></div>
+              <div class='fecha'>{{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }}</div>
+              <div><span class='icon_c'><img src='../../image/iconc.jpg'></span>{{ post.cantidad_comentarios }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    
+  {% else %}
+    <p>No se encontraron resultados.</p>
+  {% endif %}
+
+
+ 
+<script>
+
+document.getElementById('btn-buscar').addEventListener('click', function() {
+    var textoBusqueda = document.getElementById('texto-busqueda').value;
+    var idCategoria = this.getAttribute('data-categoria');
+    console.log(idCategoria);
+    
+    $.ajax({
+        url: '{{ path('buscar_anuncios') }}',
+        method: 'GET',
+         data: { texto: textoBusqueda, categoria: idCategoria },
+        success: function(response) {
+                   
+            var html = ''; 
+            
+            if(idCategoria != 7 && idCategoria != 8){
+              $.each(response.resultados, function(index, post) {
+
+                  html += '<div class="anunciosg">';
+                  html += '<div class="ap_izq">';
+                  html += '<div class="perfil_foto_an"><img src="../../image/' + post.foto + '"></div>';
+                  html += '<div class="text-center text-dark h6">' + post.nick + '</div>';
+                  html += '</div>';
+                  html += '<div class="ap_der">';
+                  html += '<div><a href="/categorias/ver/'+post.id+'">' + post.subject + '</a></div>';
+                  html += '<div class="fecha">' + post.fecha+ '</div>';
+                  html += '</div>';
+                  html += '</div>';
+
+                  
+              });
+                $('.contenido_anuncio').html(html);
+            }else{
+
+              $.each(response.resultados, function(index, post) {
+                html += '<div class="cuadro_act">';
+                html += '<a href="/categorias/ver/'+post.id+'">';
+                html += '<div class="act_img"><img src="../../image/' + post.imagen + '"></div>';
+                html += '</a>';
+                html += '<div class="actividad">';
+                html += '<div class="apact_izq">';
+                html += '<div class="h5">' + post.subject + '</div>';
+                html += '<div>' + post.fecha + '</div>';
+                html += '</div>';
+                html += '<div class="apact_der">';
+                html += '<div class="perfil_foto_an"><img src="../../image/' +  post.foto + '"></a></div>';
+                html += '<div class="text-center h6 text-dark">' + post.nick + '</div>';
+                html += '<div class="precio h6">' + post.precio + ' €</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+
+                
+            });
+              $('.actividades').html(html);
+            }
+            
+        },
+        error: function() {
+            console.error('Error al realizar la solicitud');
+        }
+    });
+});
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}Registrar Anuncio{% endblock %}
+
+{% block body %}
+<div class='insertar_ag'>
+    <h1>Crear Anuncio</h1>
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.categoria) }}
+        {{ form_widget(form.categoria, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.subject) }}
+        {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+         <span class='text-danger'>{{ form_errors(form.subject) }}</span> 
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.texto) }}
+        {{ form_widget(form.texto, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+         <span class='text-danger'>{{ form_errors(form.texto) }}</span> 
+    </div>
+
+    <button class="btn btn-dark">{{ button_label|default("Publicar") }}</button>
+
+    {{ form_end(form) }}
+</div>
+
+<p><a href="">Volver</a></p>
+{% endblock %}

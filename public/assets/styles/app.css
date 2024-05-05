@@ -1,0 +1,1008 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css");
+
+
+*{
+
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+.container{
+
+    width: 1200px;
+    margin:0 auto;
+}
+body {
+    background-color: lightgray;
+}
+
+.secciones{
+    display: flex;
+    justify-content: center;
+
+}
+
+.secciones .seccion{
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 50px;
+    margin-right:50px;
+}
+
+.secciones .seccion a {
+
+    text-decoration: none;
+    color: white;
+    font-weight:bold;
+}
+
+.secciones .seccion a:hover {
+
+
+    color: gray;
+    font-weight:bold;
+}
+.portada{
+    background-image: url(../../image/portada.jpg);
+    background-size: 100% auto;
+    background-position: center top;
+    background-repeat: no-repeat;
+    height:25vh;
+
+    
+}
+
+.contenido{
+    background-image: url(../../image/fondo.jpg);
+    background-size: 100% auto;
+    background-position: center top;
+    padding:20px;
+    height: auto;
+}
+
+.anunciosg{
+    justify-content: left;
+    display:flex;
+    background-color:azure;
+    border:2px dashed black;
+    width: 75%;
+    margin:15px auto;
+    padding: 12px;
+
+}
+
+.anunciosg a{
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.ap_izq{
+
+    padding-left: 4px;
+}
+
+.perfil_foto_an img{
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+}
+
+
+.ap_der{
+
+    padding-left: 25px;
+}
+
+.fecha{
+
+    padding-left: 620px;
+}
+
+.categoria{
+
+    width: 14%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 6px;
+    border-radius: 12px;
+    margin-top: 6px;
+    font-size: 11px;
+}
+
+.ver_anuncio{
+    justify-content: left;
+    display: flex;
+    width: 930px;
+    background-color:azure;
+    border: 2px dotted black;
+    margin:12px auto;
+   
+}
+
+.vera_izq{
+
+    padding: 19px;
+
+}
+.vera_der{
+    padding-left: 24px;
+    
+}
+
+.texto_a{
+
+    margin: 40px 0px;
+    width: 800px;
+}
+
+
+.fecha_va{
+
+   padding-left: 665px; 
+}
+
+.tabla_com{
+    width: 80%;
+    border: 1px solid darkgray;
+}
+
+.btn_agregar{
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    margin-left: 200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+
+}
+
+.categorias{
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.categorias img{
+    width: 300px;
+    height: 300px;
+    border-radius: 12px;
+}
+
+.cat_img{
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+  
+  .texto_cat {
+    position: absolute;
+    top: 80%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8); 
+    font-size: 25px;
+    opacity: 0.8;
+    padding: 10px;
+    text-align: center; 
+    border-radius: 4px;
+    
+  }
+
+.texto_categoria{
+
+    margin-left: 140px;
+    margin-bottom: 30px;
+}
+
+.texto_categoria_a{
+
+  margin-left: 10px;
+  margin-bottom: 14px;
+}
+
+.t_cat{
+
+    font-size: 38px;
+
+}
+
+.actividades{
+
+    background-color: azure;
+    border:2px dashed black;
+    padding: 20px;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.act_img{
+    text-align:center;
+
+}
+
+.act_img img{
+  width: 280px;
+  height: 280px;
+}
+
+.an_img {
+  margin: 14px;
+  text-align:center;
+}
+
+.an_img img{
+    width: 230px;
+    height: 230px;
+}
+
+
+.cuadro_act{
+
+    margin: 16px;
+    border:1px dashed black;
+}
+
+.actividad{
+    display: flex;
+    justify-content: left;
+    margin: 20px;
+    width: 250px;
+}
+
+.apact_izq{
+    width: 80%;
+
+}
+
+.apact_der{
+  margin-left: 21px;
+}
+
+.apact_nick{
+    padding-left: 2px;
+    
+}
+
+.usuarios{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+.usuariosaf {
+  width: 890px;
+  display: flex;
+  justify-content: left;
+  background-color: azure;
+  padding: 20px;
+  border: 2px dashed black;
+  margin: 0 auto;
+  overflow-x: auto; 
+  overflow-y: hidden; 
+}
+
+.usuariosaf::-webkit-scrollbar {
+  width: 12px; 
+  height: 12px; 
+}
+
+.usuariosaf::-webkit-scrollbar-thumb {
+  background-color: black; 
+  border-radius: 6px; 
+}
+
+.usuariosaf::-webkit-scrollbar-track {
+  background-color: #f0f0f0; 
+}
+
+
+.usuariosaf {
+  scrollbar-width: thin; 
+  scrollbar-color: black #f0f0f0; 
+}
+
+.usuario{
+    margin: 12px;
+    border: 1px dashed black;
+    padding: 4px;
+    background-color:azure;
+}
+
+.usuario img{
+  width: 35px;
+  height: 35px;
+  margin: 1px;
+  border-radius: 12px;
+}
+
+.online_msg img{
+width:9px;
+height: 9px;
+
+
+
+}
+
+
+
+.user_img {
+    position: relative;
+  }
+  .user_img img{
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+  }
+  .texto_user {
+    position: absolute;
+    top: 85%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8); 
+    padding: 10px; 
+    text-align: center; 
+    border-radius: 14px;
+    opacity: 0.8;
+  }
+  .user_online{
+    width: 180px;
+    margin-left: 4px;
+  }
+  
+
+  .user_online_ver{
+    margin-top: 8px;
+    padding-top: 5px;
+    padding-left: 0px;
+ 
+  }
+
+  .user_online_ver img{
+
+    width: 12px;
+    height: 12px;
+  }
+
+
+  .user_online img{
+    width: 12px;
+    height: 12px;
+  }
+
+  .user_year{
+    margin-left: 4px;
+  }
+
+  .u_online_year{
+    display: flex;
+    justify-content: left;
+    
+  }
+
+  .ver_actividad{
+
+    display: flex;
+    justify-content: left;
+    background: azure;
+    padding: 20px;
+    
+  }
+  .actver_izq{
+
+    width: 280px;
+  }
+
+  .actver_izq .imagen_act img{
+    width: 300px;
+    height: 300px;
+
+  }
+
+  .actver_der{
+
+    margin-left: 70px;
+  }
+
+.creador_act{
+
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  margin-left: 8px;
+}
+  .inscritos{
+    width: 420px;
+    height: 12vh;
+    background-color: #E2E3EC;
+    border-radius: 4px;
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    border: 1px black solid
+  }
+
+  .inscritos div{
+    margin-top: 2px;
+    margin-left: 2px;
+  }
+  
+  .nick_inscribir a{
+
+    text-decoration: none;
+  }
+  .com_act{
+
+    text-align: center;
+    background-color: azure;
+    margin-top: 4px;
+    margin-bottom: 30px;
+  }
+
+  .com_act table{
+
+    margin: 0 auto;
+    width: 640px;
+    text-align: left;
+  }
+
+  .btn_inscribir{
+    font-size: 14px;
+    text-decoration:none;
+    text-align: center;
+    width: 130px;
+    padding: 14px;
+    background-color: black;
+    margin-left: 64px;
+  }
+  
+  .btn_inscribir a{
+    color: white;
+    text-decoration:none;
+  }
+  
+  .recuadro_act{
+    justify-content: left;
+    display: flex;
+    margin-top: 12px;
+    margin-left: 6px;
+  }
+  .descripcion_act{
+
+    width: 630px;
+    margin-bottom: 34px;
+  }
+
+  .cuadro_perfil{
+    display: flex;
+    justify-content: left;
+  }
+
+  .perfil_iz img{
+    width: 300px;
+    height: 300px;
+    border-radius: 14px;
+
+  }
+  
+
+  .perfil_der{
+    margin-left: 24px;
+  }
+
+  .perfilg{
+
+    background-color: azure;
+    padding: 20px;
+    border: 2px dashed black;
+    padding-bottom: 150px;
+  }
+
+  .perfil_desc{
+
+    margin-top: 40px;
+  }
+
+  .perfil_af{
+    width: 350px;
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+  }
+
+  .perfil_af div{
+    margin: 4px;
+    background-color: black;
+    color: white;
+    padding: 11px;
+    border-radius: 14px;
+    font-size: 14px;
+  }
+
+  .btn_msg{
+    text-align: center;
+    margin-top: 25px;
+    background-color: black;
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .btn_msg a{
+    text-decoration: none;
+    color: white;
+  }
+
+  .btn_msg:hover{
+    background-color: gray;
+    color: black;
+  }
+
+  .divis{
+
+    background-color: azure;
+    margin:0 auto;
+    width: 500px;
+    padding: 40px;
+    border: 1px solid black;
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 40px;
+
+  }
+
+  .divis form{
+
+    margin-top: 50px;
+    margin-bottom: 80px;
+
+  }
+
+  .form-field {
+    margin-bottom: 28px;
+}
+
+.field-container{
+  display: flex;
+  justify-content: center;
+  
+}
+
+.field-container img{
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+}
+
+form button{
+  background-color: black;
+  color: white;
+  width: 120px;
+  margin-top: 20px;
+  margin-bottom: 14px;
+  padding: 6px;
+}
+
+
+.insertar_ag {
+  background-color: azure;
+  max-width: 750px;
+  margin: auto;
+  padding: 20px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  padding: 40px;
+  border: 1px solid gray;
+  border-radius: 4px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+#lista-usuarios {
+  display: flex;
+}
+
+.panel {
+  display: flex;
+  justify-content: center;
+}
+
+.panel-izquierdo {
+  width: 160px;
+  cursor: pointer;
+  border: 1px solid black;
+ 
+}
+
+.panel-izquierdo .badge{
+
+  background-color: black;
+  padding: 8px;
+  border-radius: 50%; 
+  width: 22px; 
+  height: 22px;
+  display: inline-flex; 
+  justify-content: center; 
+  align-items: center; 
+  color: white;
+  font-size: 10px;
+}
+
+.panel-derecho {
+  width: 750px;
+  margin-left: 20px;
+  border: 1px solid black;
+  
+}
+
+#panel-derecho {
+  height: 460px; 
+  overflow-y: auto; 
+}
+
+
+#panel-derecho::-webkit-scrollbar {
+  width: 10px; 
+}
+
+
+#panel-derecho::-webkit-scrollbar-thumb {
+  background-color: #000; 
+  border-radius: 5px; 
+}
+
+.mensaje-usuario-actual {
+  background-color: #CACBD3; 
+  margin: 8px;
+  padding: 12px;
+  width: 700px;
+  border-radius: 8px;
+}
+
+.mensaje-otro-usuario {
+  background-color: #e0e0e0; 
+  margin: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  width: 700px;
+  
+}
+
+
+.mensaje {
+  
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.panel_msg{
+
+  text-align: center;
+  margin-top: 11px;
+  margin-right: 22px;
+}
+
+.precio{
+  text-align: center;
+  color:white;
+  background-color: black;
+  width: 60px;
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 4px;
+  margin-top: 20px;
+  font-size: 17px;
+}
+
+
+
+.precio2{
+  text-align: center;
+  color:white;
+  background-color: black;
+  width: 120px;
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+
+.aficiones-container {
+  display: flex; 
+  flex-wrap: wrap; 
+}
+
+.aficion-checkbox {
+  width: calc(16% - 5px); 
+  margin: 5px; 
+  background-color: black; 
+  font-size: 13px;
+  text-align: center;
+  color: white; 
+  padding: 10px; 
+  margin-bottom: 10px; 
+  cursor: pointer; 
+  border-radius: 20px;
+}
+
+
+.selected {
+  background-color: gray;
+}
+
+
+  .aficion-checkbox input[type="checkbox"] {
+      display: none; 
+  }
+
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-item {
+    margin: 0 5px;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.pagination-item a {
+  text-decoration: none; 
+  color: white; 
+}
+
+.pagination-item.active {
+    background-color: gray;
+}
+
+.icon_c img{
+  width: 30px;
+  height: 30px;
+}
+
+.evento{
+  
+  justify-content: left;
+  display: flex;
+  background-color: azure;
+  margin-top: 20px;
+  border: 1px dashed black;
+  padding: 30px;
+}
+
+.evento-imagen{
+
+  padding:2px;
+}
+
+.evento-imagen img{
+
+  width: 340px;
+  height: 340px;
+}
+
+.evento-info{
+  margin-left: 20px;
+}
+
+.containerev{
+
+  margin-left: 30px;
+}
+
+.icon_logout{
+  margin-left: 6px;
+}
+
+.icon_logout img{
+  width: 30px;
+  height: 30px;
+}
+
+.icon_msg{
+  width: 25px;
+  background-color: white;
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.icon_msg img{
+
+  width: 20px;
+  height: 20px;
+}
+
+.num_msgs {
+  background-color: black;
+  padding: 8px;
+  border-radius: 50%; 
+  width: 23px; 
+  height: 23px;
+  display: inline-flex; 
+  justify-content: center; 
+  align-items: center; 
+  color: white;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.login{
+  margin-top: 8px;
+  margin-bottom: 6px;
+  margin-left: 20px;
+}
+
+.login a{
+  text-decoration: none;
+}
+
+.login_text a{
+
+  color: white;
+  
+}
+
+.perfil_sesion{
+
+  text-align: right;
+  color: rgb(121, 126, 126);
+  font-size: 14px;
+}
+
+.image_sesion img{
+   width: 37px;
+   height: 37px;
+   border-radius: 20px;
+   margin: 0px;
+}
+
+.s_nick{
+ 
+  font-size: 12px;
+  color: white;
+}
+
+.busqueda{
+
+  width: 50%;
+  margin-left: 12px;
+}
+
+.insertar{
+
+  width: 68%;
+  margin-left: 130px;
+}
+
+.busqueda_a{
+  width: 50%;
+  margin-left: 440px;
+
+}
+
+.insertar_a{
+  width: 68%;
+  
+}
+
+.insertar_a a{
+  text-decoration: none;
+}
+
+.insertar a{
+  text-decoration: none;
+}
+
+
+
+
+.bar_anuncios{
+  display: flex;
+  justify-content: left;
+  margin-bottom: 12px;
+}
+
+.insertar_btn{
+  width: 130px;
+  background-color: black; 
+  color: white; 
+  padding: 10px 10px; 
+  border-radius: 6px; 
+  font-size: 14px; 
+  cursor: pointer; 
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
+.insertar_btn_act{
+  margin-bottom: 12px;
+  text-align: center;
+  width: 140px;
+  margin-top: 4px;
+  background-color: black; 
+  color: white; 
+  padding: 10px 10px; 
+  border-radius: 6px; 
+  font-size: 14px; 
+  cursor: pointer; 
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.insertar_btn_act a{
+  text-decoration: none;
+}
+
+.act_bar a{
+
+  text-decoration: none;
+}
+
+.insertar_btn a:visited{ 
+  color:white;
+}
+
+.custom-width {
+  width: 100px; 
+}
+
+.div_age{
+  margin-top: 12px;
+}
+
+.ico_age img{
+
+  width: 40px;
+  height: 40px;
+}
+
+.age{
+  font-weight: bold;
+  font-size: 18px;
+  margin-left: 0px;
+  
+}
+
+.div_gen{
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+
+.ico_act img{
+
+  width: 32px;
+  height: 32px;
+}
+
+.txt_act{
+
+  font-size: 17px;
+  margin-left: 0px;
+  
+}
+
+.act_props{
+  margin-bottom: 8px;
+}
+

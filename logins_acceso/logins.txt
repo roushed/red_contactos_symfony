@@ -1,0 +1,17 @@
+
+Usuarios de acceso:
+
+user: pepe
+password: hola1
+
+user: maria
+password: hola1
+
+user: tony
+password: tony123
+
+user: snoopi
+password: snoopi123
+
+user: juanma
+password: juanma123
