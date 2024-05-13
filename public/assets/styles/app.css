@@ -316,15 +316,15 @@ body {
 }
 
 .usuario{
-    margin: 12px;
+    margin: 8px;
     border: 1px dashed black;
     padding: 4px;
     background-color:azure;
 }
 
 .usuario img{
-  width: 35px;
-  height: 35px;
+  width: 24px;
+  height: 24px;
   margin: 1px;
   border-radius: 12px;
 }
@@ -657,7 +657,7 @@ form button{
 }
 
 #panel-derecho {
-  height: 500px; 
+  height: 50vh; 
   overflow-y: auto; 
 }
 
