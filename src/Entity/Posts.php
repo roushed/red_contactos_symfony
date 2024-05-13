@@ -22,9 +22,6 @@ class Posts
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $texto = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imagen = null;
-
     #[ORM\Column(nullable: true)]
     private ?bool $creador = null;
 
@@ -39,16 +36,43 @@ class Posts
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorias $categoria = null;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comentariosp::class)]
+    //#[ORM\OneToMany(mappedBy: 'post', targetEntity: Comentariosp::class)]
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comentariosp::class, cascade: ['remove'])]
     private Collection $comentariosps;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Usuarios $nick = null;
 
+    /**
+     * @var Collection<int, Imagenes>
+     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Imagenes::class)]
+    private Collection $imagenes;
+
+    #[ORM\Column(length: 16, nullable: true)]
+    private ?string $telefono = null;
+
+
+    /**
+     * @var Collection<int, Likes>
+     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Likes::class)]
+    private Collection $likes;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $adquisicion = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $municipio = null;
+
+
     public function __construct()
     {
         $this->comentariosps = new ArrayCollection();
+        $this->imagenes = new ArrayCollection();
+        $this->likes = new ArrayCollection(); 
+       
     }
 
     public function getId(): ?int
@@ -80,18 +104,7 @@ class Posts
         return $this;
     }
 
-    public function getImagen(): ?string
-    {
-        return $this->imagen;
-    }
-
-    public function setImagen(?string $imagen): static
-    {
-        $this->imagen = $imagen;
-
-        return $this;
-    }
-
+ 
     public function isCreador(): ?bool
     {
         return $this->creador;
@@ -187,6 +200,107 @@ class Posts
     {
         return $this->comentariosps->count();
     }
+
+    /**
+     * @return Collection<int, Imagenes>
+     */
+    public function getImagenes(): Collection
+    {
+        return $this->imagenes;
+    }
+
+    public function addImagene(Imagenes $imagene): static
+    {
+        if (!$this->imagenes->contains($imagene)) {
+            $this->imagenes->add($imagene);
+            $imagene->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImagene(Imagenes $imagene): static
+    {
+        if ($this->imagenes->removeElement($imagene)) {
+            // set the owning side to null (unless already changed)
+            if ($imagene->getPost() === $this) {
+                $imagene->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTelefono(): ?string
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(?string $telefono): static
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(?Likes $likes): static
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    public function addLike(Likes $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Likes $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getPost() === $this) {
+                $like->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isAdquisicion(): ?bool
+    {
+        return $this->adquisicion;
+    }
+
+    public function setAdquisicion(?bool $adquisicion): static
+    {
+        $this->adquisicion = $adquisicion;
+
+        return $this;
+    }
+
+    public function getMunicipio(): ?string
+    {
+        return $this->municipio;
+    }
+
+    public function setMunicipio(?string $municipio): static
+    {
+        $this->municipio = $municipio;
+
+        return $this;
+    }
+
 
 
 }

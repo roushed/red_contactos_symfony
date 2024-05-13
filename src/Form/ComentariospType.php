@@ -19,7 +19,7 @@ class ComentariospType extends AbstractType
             'label' => false,
             'attr' => [
                 'rows' => 12,
-                'cols' => 80, 
+                'cols' => 84, 
             ],
         ])
         ;

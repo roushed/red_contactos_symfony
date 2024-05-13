@@ -43,6 +43,9 @@ class Actividades
     #[ORM\OneToMany(mappedBy: 'actividad', targetEntity: Comentariosa::class)]
     private Collection $comentariosas;
 
+    #[ORM\Column]
+    private ?int $npersonas = null;
+
     public function __construct()
     {
         $this->actividadesUsuarios = new ArrayCollection();
@@ -196,6 +199,18 @@ class Actividades
                 $comentariosa->setActividad(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNpersonas(): ?int
+    {
+        return $this->npersonas;
+    }
+
+    public function setNpersonas(int $npersonas): static
+    {
+        $this->npersonas = $npersonas;
 
         return $this;
     }

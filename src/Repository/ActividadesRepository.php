@@ -45,4 +45,36 @@ class ActividadesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+    public function findActividades()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id, a.nombre, a.descripcion, a.fecha, a.direccion, a.municipio, a.img, a.hora, u.id as id_usuario, u.nick as nick,  p.foto as foto_perfil')
+            ->leftJoin('a.actividadesUsuarios', 'au')
+            ->leftJoin('au.nick', 'u')
+            ->leftJoin('u.perfiles', 'p')
+            //->where('a.fecha >= CURRENT_DATE()')
+            ->orderBy('a.fecha', 'ASC') 
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findActividad($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id, a.nombre, a.descripcion, a.fecha, a.direccion, a.municipio, a.hora, a.img, a.npersonas, u.nick as nick, u.id as idusuario, p.foto as foto_perfil')
+            ->leftJoin('a.actividadesUsuarios', 'au', 'WITH', 'au.id_actividad = a.id AND au.creador = :esCreador')
+            ->leftJoin('au.nick', 'u')
+            ->leftJoin('u.perfiles', 'p')
+            ->where('a.id = :idActividad')
+            ->groupBy('a.id')
+            ->setParameter('idActividad', $id)
+            ->setParameter('esCreador', true)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

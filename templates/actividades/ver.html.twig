@@ -32,15 +32,19 @@
                     
                     {% if app.session.get('user_authenticated') %}
                         {% if app.session.get('nombre') != actividad.nick %}
-                        <div class='inscribir_btn'>
                          
+                        <div class='inscribir_btn'>
                             {% if inscrito %}
                                 <div class='btn_inscribir'><a href="{{ path('app_actividades_ver', {'id': actividad.id, 'action': 'desinscribir'}) }}">Desinscribirse</a></div>
 
                             {% else %}
-                                <div class='btn_inscribir'><a href="{{ path('app_actividades_ver', {'id': actividad.id, 'action': 'inscribir'}) }}">Inscribirse</a></div>
+                                {% if results_u|length < actividad.npersonas %}
+                                    <div class='btn_inscribir'><a href="{{ path('app_actividades_ver', {'id': actividad.id, 'action': 'inscribir'}) }}">Inscribirse</a></div>
+                                {% else %}
+                                    <div style="margin-left: 28px;">No se permite inscribir más usuarios</div>
+                                {% endif %}
                             {% endif %}
-                    </div>
+                        </div>
                         {% endif %}
                     {% endif %}
                 </div>             
@@ -66,7 +70,7 @@
 
                    
                 
-                <p>Total de usuarios inscritos: {{ results_u|length }}</p>
+                <p>Total de usuarios inscritos: {{ results_u|length }}/{{actividad.npersonas}}</p>
                 <div class='inscritos'>             
                    
                         {% for usuario in results_u %}

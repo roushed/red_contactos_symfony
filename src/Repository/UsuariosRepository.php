@@ -62,4 +62,17 @@ class UsuariosRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findUsuariosByActividad($id)
+        {
+            return $this->createQueryBuilder('u')
+                ->select('u.id, u.nick, p.foto as foto_perfil')
+                ->leftJoin('u.perfiles', 'p')
+                ->innerJoin('u.actividadesUsuarios', 'au')
+                ->innerJoin('au.id_actividad', 'a')
+                ->where('a.id = :idActividad')
+                ->setParameter('idActividad', $id)
+                ->getQuery()
+                ->getResult();
+        }
 }

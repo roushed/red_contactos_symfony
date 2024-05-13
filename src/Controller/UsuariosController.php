@@ -11,6 +11,8 @@ use App\Entity\Usuarios;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use DateInterval;
 use DateTime;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class UsuariosController extends AbstractController
@@ -94,6 +96,7 @@ class UsuariosController extends AbstractController
             ->from(Perfiles::class, 'p')
             ->leftJoin('p.nick', 'u') 
             ->orderBy('u.online', 'DESC')
+            ->addOrderBy('u.fecha', 'DESC')
             ->getQuery()
             ->getResult();
        
@@ -154,4 +157,60 @@ class UsuariosController extends AbstractController
         ]);
 
     }
+
+
+    #[Route('/buscar-usuarios', name: 'buscar_usuarios')]
+    public function buscarAnuncios(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $edadDesde = $request->query->get('edesde');
+        $edadHasta = $request->query->get('ehasta');
+        $genero = $request->query->get('genero');
+
+        if($edadDesde != null &&  $edadHasta != null){
+           
+            $anioActual = date('Y');
+            $fechaInicio = $anioActual - $edadDesde . '-12-31';
+            $fechaFin = $anioActual - $edadHasta . '-01-01';
+
+        }else{
+            $fechaInicio = null;
+            $fechaFin = null;
+        }
+   
+
+        $queryBuilder = $entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select('u.nick', 'u.id', 'u.online', 'p.edad', 'p.foto')
+            ->from(Perfiles::class, 'p')
+            ->leftJoin('p.nick', 'u');
+
+        if ($genero != null) {
+
+            $queryBuilder
+                ->andWhere('p.genero = :genero')
+                ->setParameter('genero', $genero);
+        }
+
+        if ($fechaInicio !== null && $fechaFin !== null) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->between('p.edad', ':edadHasta', ':edadDesde'))
+                ->setParameter('edadDesde', $fechaInicio)
+                ->setParameter('edadHasta', $fechaFin);
+        }
+
+        $usuarios = $queryBuilder
+            ->orderBy('u.online', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+            $anioActual = date('Y');
+            foreach ($usuarios as &$usuario) {
+                $edad = $anioActual - $usuario['edad']->format('Y');
+                $usuario['edad'] = $edad;
+            }
+
+                return new JsonResponse(['usuarios' => $usuarios]);
+            }
+
 }

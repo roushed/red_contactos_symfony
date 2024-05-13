@@ -45,4 +45,15 @@ class ActividadesUsuariosRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function findInscrito($actividadId, $usuario)
+    {
+        return $this->createQueryBuilder('au')
+            ->where('au.id_actividad = :actividadId')
+            ->andWhere('au.nick = :usuario')
+            ->setParameter('actividadId', $actividadId)
+            ->setParameter('usuario', $usuario)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

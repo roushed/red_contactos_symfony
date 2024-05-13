@@ -2,12 +2,21 @@
 {% for mensaje in conversacion %}
     {% set claseMensaje = mensaje.nickenvia.id == usuario_actual.id ? 'mensaje-usuario-actual' : 'mensaje-otro-usuario' %}
     <div class="{{ claseMensaje }}">
-        <strong>{% if mensaje.nickenvia.id != usuario_actual.id %}{{ mensaje.nickenvia.nick }}{% endif %}</strong>
-        <div>{{ mensaje.texto}}</div>
-        <br>
+    <div class='divmsg' style='display: flex; justify-content: left;'>
+        <div class='divmsg_iz'>
+            {% if mensaje.nickenvia.id != usuario_actual.id %}
+                <img src='../../image/{{ mensaje.nickenvia.perfil.foto }}' style='width: 50px; height: 50px; border-radius: 10px;' alt='{{ mensaje.nickenvia.nick }}'>
+            {% else %} 
+                <img src='../../image/{{ mensaje.nickenvia.perfil.foto }}' style='width: 50px; height: 50px; border-radius: 10px;' alt='{{ mensaje.nickenvia.nick }}'>
+            {% endif %}
+        </div>
+        <div class='divmsg_der' style='margin-left: 10px;'>
+            <div>{{ mensaje.texto }}</div>
+        </div>
     </div>
+</div>
 {% else %}
-    <p>No hay mensajes en la conversación.</p>
+    <p>No hay mensajes dasdas en la conversación.</p>
 {% endfor %}
 
 

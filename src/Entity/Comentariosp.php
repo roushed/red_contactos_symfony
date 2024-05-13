@@ -14,8 +14,9 @@ class Comentariosp
     #[ORM\Column]
     private ?int $id = null;
 
+    //#[ORM\ManyToOne(inversedBy: 'comentariosps')]
     #[ORM\ManyToOne(inversedBy: 'comentariosps')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'post_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Posts $post = null;
 
     #[ORM\ManyToOne(inversedBy: 'comentariosps')]

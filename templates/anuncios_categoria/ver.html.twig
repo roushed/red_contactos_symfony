@@ -21,26 +21,27 @@
                      
                             
         </div>
-
-        {% if app.session.get('user_authenticated') %}
-                   
-                        <form class="ajax-form" action="{{ path('app_porcategoria_ver', {'id': post.id}) }}" method="post">
-                            {{ form_row(form_comentarios.texto) }}
-                            <button type="submit" class='btn_agregar'>Agregar</button>
-                        </form>
-                
+        <div class='text_c'>
+            {% if app.session.get('user_authenticated') %}
+                    
+                            <form class="ajax-form" action="{{ path('app_porcategoria_ver', {'id': post.id}) }}" method="post">
+                                {{ form_row(form_comentarios.texto) }}
+                                <button type="submit" class='btn_agregar'>Agregar</button>
+                            </form>
+        </div>
                     
         {% endif %}
 
     </div>
      
 </div>
+</div>
     {% else %}
 
         <p>
             <div class="ver_actividad">
                 <div class='actver_izq'>
-                    <div class='imagen_act'><img src='../../image/{{post.imagen}}'></div> 
+                    <div class='imagen_act'><img src='../../image/{{ imagenes[0].nombre }}'></div> 
                     <div class='recuadro_act'>
                         <div class='perfil_foto_an'><a href="{{ path('app_usuarios_ver', {'id': id_nick})}}"><img src='../../image/{{perfil.foto}}'></a></div>
                         <div class='creador_act text-primary h6'>{{nick}}</div>
@@ -56,19 +57,53 @@
                      <div class='h3 precio2'>{{post.precio}} €</div>
                     <div class='h2'>Info:</div>
                     <div class='descripcion_act'>{{post.texto}}</div>
-                    {% if post.categoria.id != 8 %}
-                        <div class='act_props'>
-                     <span class='ico_act'><img src='../../image/localidad.png'></span> 
-                    <span class='txt_act'>{{perfil.ciudad}}</span>
-                </div>
+                     {% if post.telefono is not empty %}
+                            <div class='act_props'>
+                                <span class='ico_act'><img src='../../image/ico_tlf.png'></span> 
+                                <span class='txt_act'>{{post.telefono}}</span>
+                            </div>
                     {% endif %}
+                                     
+                        <div class='act_props'>
+                            <span class='ico_act'><img src='../../image/localidad.png'></span> 
+                            <span class='txt_act'>{{post.municipio}}</span>
+                        </div>
+                       
+                
+                    <div class='act_props'>
+                            <span class='ico_heart'><img src='../../image/corazonw_icon.png'></span> 
+                            <span class='txt_act'>{{likescount}}</span>
+                    </div>
                      <div>Publicado {{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }} {{ post.fecha|date('Y') }}</div>
+                     {% if imagenes is not empty %}
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        
+                        <div class="carousel-inner">
+                            {% for key, imagen in imagenes %}
+                                <div class="carousel-item {% if key == 0 %}active{% endif %}">
+                                    <div class='img_anuncio'><img src='../../image/{{ imagen.nombre }}'></div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true" style=" width: 38px; height: 38px; background-color: black; border-radius: 50%; padding: 5px;"></span>
+                            
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true" style="width: 38px; height: 38px; background-color: black; border-radius: 50%; padding: 5px;"></span>
+                            
+                        </a>
+                    </div>
+                {% endif %}
                 </div>
             </div>
         </p>
 
      {% endif %}
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {

@@ -41,6 +41,12 @@
     </div>
 
     <div class="form-group">
+        {{ form_label(form.npersonas) }}
+        {{ form_widget(form.npersonas, {'attr': {'class': 'form-control'}}) }}
+           <span class='text-danger'>{{ form_errors(form.npersonas) }}</span>
+    </div>
+
+    <div class="form-group">
         {{ form_label(form.municipio) }}
         {{ form_widget(form.municipio, {'attr': {'class': 'form-control'}}) }}
     </div>

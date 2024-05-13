@@ -22,16 +22,7 @@ class ActividadesController extends AbstractController
     {
         $actividadesRepository = $entityManager->getRepository(Actividades::class);
      
-        $actividades = $actividadesRepository->createQueryBuilder('a')
-            ->select('a.id, a.nombre, a.descripcion, a.fecha, a.direccion, a.municipio, a.img, a.hora, u.id as id_usuario, u.nick as nick,  p.foto as foto_perfil')
-            ->leftJoin(ActividadesUsuarios::class, 'au', 'WITH', 'au.id_actividad = a.id')
-            ->leftJoin('au.nick', 'u')
-            ->leftJoin('u.perfiles', 'p')
-            //->where('a.fecha >= CURRENT_DATE()')
-            ->orderBy('a.fecha', 'ASC') 
-            ->groupBy('a.id')
-            ->getQuery()
-            ->getResult();
+        $actividades = $actividadesRepository->findActividades();
         
         return $this->render('actividades/index.html.twig', [
             'results' => $actividades,
@@ -50,12 +41,7 @@ class ActividadesController extends AbstractController
             $usuario = $usuarioRepository->findOneBy(['nick' => $session->get('nombre')]);
             $usuarioActual = $entityManager->getRepository(Usuarios::class)->find($usuario->getId());
             $actividadRepository = $entityManager->getRepository(ActividadesUsuarios::class);
-            $inscrito = $actividadRepository->createQueryBuilder('au')
-                ->where('au.id_actividad = :actividadId AND au.nick = :usuario')
-                ->setParameter('actividadId', $id)
-                ->setParameter('usuario', $usuarioActual)
-                ->getQuery()
-                ->getOneOrNullResult();
+            $inscrito = $actividadRepository->findInscrito($id, $usuarioActual);
         } else {
             $inscrito = null; 
         }
@@ -93,27 +79,9 @@ class ActividadesController extends AbstractController
         }
     
         $actividadRepository = $entityManager->getRepository(Actividades::class);
-        $actividad = $actividadRepository->createQueryBuilder('a')
-        ->select('a.id, a.nombre, a.descripcion, a.fecha, a.direccion, a.municipio, a.hora, a.img, u.nick as nick, u.id as idusuario, p.foto as foto_perfil')
-        ->leftJoin(ActividadesUsuarios::class, 'au', 'WITH', 'au.id_actividad = a.id AND au.creador = :esCreador')
-        ->leftJoin('au.nick', 'u')
-        ->leftJoin('u.perfiles', 'p')
-        ->where('a.id = :idActividad')
-        ->groupBy('a.id')
-        ->setParameter('idActividad', $id)
-        ->setParameter('esCreador', true) 
-        ->getQuery()
-        ->getResult();
-        $usuarios = $usuarioRepository->createQueryBuilder('u')
-            ->select('u.id, u.nick, p.foto as foto_perfil')
-            ->leftJoin('u.perfiles', 'p')
-            ->innerJoin('u.actividadesUsuarios', 'au')
-            ->innerJoin('au.id_actividad', 'a')
-            ->where('a.id = :idActividad')
-            ->setParameter('idActividad', $id)
-            ->getQuery()
-            ->getResult();
-        
+        $actividad = $actividadRepository->findActividad($id);
+        $usuarios = $usuarioRepository->findUsuariosByActividad($id);
+    
             $actividadc = $entityManager->getRepository(Actividades::class)->find($id);
             $comentarios = $entityManager->getRepository(Comentariosa::class)->getComentariosActividad($id);
            
@@ -180,7 +148,7 @@ class ActividadesController extends AbstractController
                $actividad->setImg($nombreArchivo);
 
             }else{
-                $nombreArchivo ='icono_plan.jpg';
+                $nombreArchivo ='/icos/icono_plan.jpg';
                 $actividad->setImg($nombreArchivo);
             }
             

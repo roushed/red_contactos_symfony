@@ -43,12 +43,22 @@ class Usuarios
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $fecha = null;
 
+    #[ORM\ManyToOne(inversedBy: 'nick')]
+    private ?Likes $likes = null;
+
+    /**
+     * @var Collection<int, Likes>
+     */
+    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Likes::class)]
+    private Collection $no;
+
     public function __construct()
     {
         $this->actividadesUsuarios = new ArrayCollection();
         $this->perfiles = new ArrayCollection();
         $this->mensajes = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->no = new ArrayCollection();
     }
 
 
@@ -237,6 +247,48 @@ class Usuarios
     public function setFecha(?\DateTimeInterface $fecha): static
     {
         $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    public function getLikes(): ?Likes
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(?Likes $likes): static
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Likes>
+     */
+    public function getNo(): Collection
+    {
+        return $this->no;
+    }
+
+    public function addNo(Likes $no): static
+    {
+        if (!$this->no->contains($no)) {
+            $this->no->add($no);
+            $no->setNick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNo(Likes $no): static
+    {
+        if ($this->no->removeElement($no)) {
+            // set the owning side to null (unless already changed)
+            if ($no->getNick() === $this) {
+                $no->setNick(null);
+            }
+        }
 
         return $this;
     }

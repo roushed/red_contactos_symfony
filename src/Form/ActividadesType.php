@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ActividadesType extends AbstractType
 {
@@ -76,7 +77,19 @@ class ActividadesType extends AbstractType
                 'mapped' => false, 
             ])
 
-        ;
+            ->add('npersonas', IntegerType::class, [
+                'label' => 'Nº personas',
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Por favor, introduce el número de personas.'
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => '/^\d+$/',
+                        'message' => 'Este valor debe ser un número.'
+                    ]),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

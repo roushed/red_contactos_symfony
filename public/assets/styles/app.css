@@ -133,6 +133,11 @@ body {
     
 }
 
+.text_c{
+ 
+  padding-top: 30px;
+}
+
 .texto_a{
 
     margin: 40px 0px;
@@ -235,18 +240,17 @@ body {
 }
 
 .an_img {
-  margin: 14px;
+  margin: 8px;
   text-align:center;
 }
 
 .an_img img{
-    width: 230px;
-    height: 230px;
+    width: 270px;
+    height: 270px;
 }
 
 
 .cuadro_act{
-
     margin: 16px;
     border:1px dashed black;
 }
@@ -259,7 +263,7 @@ body {
 }
 
 .apact_izq{
-    width: 80%;
+    width: 200px;
 
 }
 
@@ -403,14 +407,14 @@ height: 9px;
   }
 
   .actver_izq .imagen_act img{
-    width: 300px;
-    height: 300px;
+    width: 340px;
+    height: 310px;
 
   }
 
   .actver_der{
 
-    margin-left: 70px;
+    margin-left: 90px;
   }
 
 .creador_act{
@@ -463,7 +467,7 @@ height: 9px;
     width: 130px;
     padding: 14px;
     background-color: black;
-    margin-left: 64px;
+    margin-left: 102px;
   }
   
   .btn_inscribir a{
@@ -653,7 +657,7 @@ form button{
 }
 
 #panel-derecho {
-  height: 460px; 
+  height: 500px; 
   overflow-y: auto; 
 }
 
@@ -695,29 +699,43 @@ form button{
 .panel_msg{
 
   text-align: center;
-  margin-top: 11px;
-  margin-right: 22px;
+  margin-top: 12px;
+  margin-right: 24px;
 }
 
+
+
 .precio{
+  width: 90px;
   text-align: center;
   color:white;
   background-color: black;
-  width: 60px;
   border: 1px solid black;
   border-radius: 12px;
   padding: 4px;
-  margin-top: 20px;
+  
   font-size: 17px;
 }
 
+.perfilnick{
+  margin-left: 31px;
+}
 
+.adquiub{
+
+  margin-left: 2px;
+}
+
+.ico_loc img{
+  width: 30px;
+  height: 30px;
+}
 
 .precio2{
   text-align: center;
   color:white;
   background-color: black;
-  width: 120px;
+  width: 145px;
   border: 1px solid black;
   border-radius: 12px;
   padding: 4px;
@@ -995,6 +1013,12 @@ form button{
   height: 32px;
 }
 
+.ico_heart img{
+  margin-left: 2px;
+  width: 25px;
+  height: 25px;
+}
+
 .txt_act{
 
   font-size: 17px;
@@ -1006,3 +1030,131 @@ form button{
   margin-bottom: 8px;
 }
 
+.img_anuncio img {
+  width: 720px; /* Ajustar la anchura al 100% del contenedor */
+  height:550px;
+  
+  max-height: 800px; /* Establecer una altura máxima opcional para limitar el tamaño */
+  object-fit: cover; /* Ajustar la imagen dentro del contenedor sin distorsionarla */
+}
+
+
+
+
+.dropzone{
+  border-radius: 4px;
+  border: 2px dashed black;
+  padding: 20px;
+  text-align: center;
+}
+
+#selected-images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#selected-images img{
+  width: 200px;
+  height: 200px;
+  margin: 3px;
+}
+
+.selected-image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.selected-image {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.delete-btn {
+  width: 50px;
+  position: absolute;
+  top: 142px;
+  left: 145px;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+.imgs_ico img{
+
+  width: 50px;
+  height: 50px;
+
+}
+
+.carousel-inner{
+margin-top: 130px;
+
+}
+
+.like-btn,
+.unlike-btn {
+    /* Define el tamaño del div para que coincida con el tamaño de la imagen */
+    width: 23px;
+    height: 23px;
+    /* Establece la imagen de fondo */
+    background-image: url('../../image/corazonw_icon.png');
+    /* Ajusta la imagen de fondo al tamaño del div */
+    background-size: cover;
+}
+.unlike-btn {
+    background-image: url('../../image/corazonb_icon.png');
+}
+
+.like-btn img{
+  width: 20px;
+  height: 20px;
+}
+
+.like-btn2 img{
+  width: 20px;
+  height: 20px;
+
+}
+
+.unlike-btn img{
+  width: 20px;
+  height: 20px;
+
+}
+
+.like-actions{
+  margin-left: 61px;
+}
+
+.opcionselect{
+  margin:0px;
+  padding: 0px;
+}
+
+.filtro{
+  width: 700px;
+  background-color: black;
+  justify-content: center;
+  display: flex;
+  color: white;
+  border-radius: 20px;
+  padding: 12px;
+  margin: 27px auto;
+  align-items: center;
+
+}
+
+.fgenero{
+
+  margin-left: 17px;
+}
+
+.divmsg{
+  display: flex;
+  justify-content: center;
+}

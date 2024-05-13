@@ -39,23 +39,9 @@ class AnunciosController extends AbstractController
         ->getQuery()
         ->getSingleScalarResult();
 
-  
     $totalPages = ceil($totalPosts / $limit);
-
-    
-    $posts = $entityManager->createQueryBuilder()
-        ->select('p.id', 'p.subject', 'p.texto', 'p.imagen', 'p.creador', 'p.fecha',  'IDENTITY(p.nick) AS usuario_id',  'u.nick as usuario_nick', 'c.nombre as categoria_nombre', 'pf.foto as perfil_foto')
-        ->from(Posts::class, 'p')
-        ->leftJoin('p.categoria', 'c')
-        ->leftJoin('p.nick', 'u')
-        ->leftJoin('u.perfiles', 'pf')
-        ->orderBy('p.fecha', 'DESC')
-        ->addOrderBy('p.id', 'DESC')
-        ->setFirstResult($offset)
-        ->setMaxResults($limit)
-        ->getQuery()
-        ->getResult();
-        
+    $posts = $postsRepository->findPosts($offset, $limit);
+   
     return $this->render('anuncios/index.html.twig', [
         'results' => $posts ?? [],
         'totalPages' => $totalPages,

@@ -8,7 +8,7 @@
   {% if usuarios %}
 
   {% if app.session.get('user_authenticated') %}
-    <h2>Muiembros más afines a ti:</h2>
+    <h2>Miembros más afines a ti:</h2>
       <div class='usuariosaf'>
       {% for afinidad in afinidades %}
     
@@ -37,7 +37,24 @@
       </div>
   
   {% endif %}
-    <h2>Lista de Usuarios:</h2>
+  <div class='filtro'>
+    <div>
+          <span>Edad:</span>
+          <input type="text" id="edad-desde" placeholder="Desde" style="padding: 5px; border: 1px solid black; border-radius: 6px; font-size: 14px; width: 80px;">
+          <input type="text" id="edad-hasta" placeholder="Hasta" style="padding: 5px; border: 1px solid black; border-radius: 6px; font-size: 14px; width: 80px;">
+    </div>
+    <div class='fgenero'>
+    <input type="radio" id="hombre" name="genero" value="h">
+      <label for="hombre">Hombre</label>
+      <input type="radio" id="mujer" name="genero" value="m">
+      <label for="mujer">Mujer</label>
+      <input type="radio" id="todos" name="genero" value="">
+      <label for="todos">Ambos</label>
+    </div>
+    <div>
+      <button id="btn-buscar" style="background-color: gray; margin-left: 25px; color: white; padding: 6px 11px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; transition: background-color 0.3s, color 0.3s;">Buscar</button>
+    </div>
+    </div>
     <div class='usuarios'>
     {% for usuario in usuarios %}
       <p>
@@ -70,6 +87,61 @@
   {% endif %}
 
  </div>
+
+
+  <script>
+
+    document.getElementById('btn-buscar').addEventListener('click', function() {
+        var edadDesde = document.getElementById('edad-desde').value;
+        var edadHasta = document.getElementById('edad-hasta').value;
+        var genero = document.querySelector('input[name="genero"]:checked');
+      
+      edadDesde = edadDesde.trim() === "" ? null : edadDesde;
+      edadHasta = edadHasta.trim() === "" ? null : edadHasta;
+      genero = genero ? genero.value : null;
+
+        $.ajax({
+      url: '{{ path('buscar_usuarios') }}',
+      method: 'GET',
+      data: { edesde: edadDesde, ehasta: edadHasta, genero: genero },
+      success: function(response) {
+          var html = ''; 
+          console.log(response);
+
+          $.each(response.usuarios, function(index, usuario) {
+              html += '<div class="usuario">';
+              html += '<div class="user_img">';
+              html += '<div><a href="/usuarios/ver/' + usuario.id + '"><img src="../../image/' + usuario.foto + '"></a></div>';
+              html += '<div class="texto_user">' + usuario.nick + '</div>';
+              html += '</div>';
+              html += '<div class="u_online_year">';
+              html += '<div class="user_online">';
+              if (usuario.online) {
+                  html += '<div><img src="../../image/pverde.png">Online</div>';
+              }
+              html += '</div>';
+              html += '<div class="user_year">';
+            
+              html += '<div>' + usuario.edad + '</div>';
+              html += '</div>';
+              html += '</div>';
+              html += '</div>';
+          });
+
+          $('.usuarios').html(html);
+      },
+      error: function() {
+          console.error('Error al realizar la solicitud');
+      }
+  });
+      
+
+
+
+    });
+
+</script>
+
 {% endblock %}
 
 

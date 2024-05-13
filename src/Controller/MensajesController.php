@@ -52,7 +52,7 @@ class MensajesController extends AbstractController
     $nuevoMensaje = new Mensajes();
     $form = $this->createForm(MensajesType::class, $nuevoMensaje);
     $form->handleRequest($request);
-
+    $mensajesUsuario = $mensajesRepository->findMensajesUsuario($usuario, $id);    
     if ($form->isSubmitted() && $form->isValid()) {
         
         $nuevoMensaje->setNickenvia($usuarioEnvia);
@@ -62,18 +62,8 @@ class MensajesController extends AbstractController
         $nuevoMensaje->setLeido(0);
         $entityManager->persist($nuevoMensaje);
         $entityManager->flush();
-        
-        
 
-        $mensajesUsuario = $mensajesRepository->createQueryBuilder('m')
-        ->where('(m.nickenvia = :usuarioId AND m.nickrecibo = :selectedUserId) OR (m.nickenvia = :selectedUserId AND m.nickrecibo = :usuarioId)')
-        ->setParameter('usuarioId', $usuario)
-        ->setParameter('selectedUserId', $id)
-        ->orderBy('m.fecha', 'ASC')
-        ->getQuery()
-        ->getResult();
-        
-  
+        $mensajesUsuario = $mensajesRepository->findMensajesUsuario($usuario, $id);    
         $msgHtml = $this->renderView('mensajes/mensaje_list.html.twig', [
         'mensajes_u' => $mensajesUsuario,
         'form_mensajes' => $form->createView(),
@@ -87,14 +77,7 @@ class MensajesController extends AbstractController
         
     }
 
-    $mensajesUsuario = $mensajesRepository->createQueryBuilder('m')
-        ->where('(m.nickenvia = :usuarioId AND m.nickrecibo = :selectedUserId) OR (m.nickenvia = :selectedUserId AND m.nickrecibo = :usuarioId)')
-        ->setParameter('usuarioId', $usuario)
-        ->setParameter('selectedUserId', $id)
-        ->orderBy('m.fecha', 'ASC')  
-        ->getQuery()
-        ->getResult();
-
+    
     return $this->render('mensajes/mensajes.html.twig', [
         'mensajes_u' => $mensajesUsuario,
         'form_mensajes' =>$form,
@@ -114,14 +97,8 @@ class MensajesController extends AbstractController
         $usuarioActual = $usuarioRepository->findOneBy(['nick' => $session->get('nombre')]);
         $usuarioSeleccionado = $entityManager->getRepository(Usuarios::class)->find($usuarioId);
         
-        $conversacion = $mensajesRepository->createQueryBuilder('m')
-        ->where('(m.nickenvia = :usuarioId AND m.nickrecibo = :selectedUserId) OR (m.nickenvia = :selectedUserId AND m.nickrecibo = :usuarioId)')
-        ->setParameter('usuarioId', $usuarioActual)
-        ->setParameter('selectedUserId', $usuarioSeleccionado)
-        ->orderBy('m.fecha', 'ASC')
-        ->getQuery()
-        ->getResult();
-       
+        $conversacion = $mensajesRepository->findConversacion($usuarioActual, $usuarioSeleccionado);
+     
         foreach ($conversacion as $mensaje) {
             if ($mensaje->getNickrecibo() === $usuarioActual && !$mensaje->isLeido()) {
                 $mensaje->setLeido(true);
@@ -190,14 +167,7 @@ public function actualizarListaUsuarios(EntityManagerInterface $entityManager, S
         $usuarioRepository = $entityManager->getRepository(Usuarios::class);
         $usuarioActual = $usuarioRepository->findOneBy(['nick' => $session->get('nombre')]);
         $mensajesRepository = $entityManager->getRepository(Mensajes::class);
-        $numMensajes = $mensajesRepository->createQueryBuilder('m')
-        ->select('COUNT(m.id)')
-        ->where('m.nickrecibo = :usuario')
-        ->andWhere('m.leido = :leido')
-        ->setParameter('usuario', $usuarioActual)
-        ->setParameter('leido', false)
-        ->getQuery()
-        ->getSingleScalarResult();
+        $numMensajes = $mensajesRepository->countMensajesNoLeidos($usuarioActual);
             
         return $this->render('num_mensajes.html.twig', [
             'numMensajes' => $numMensajes,

@@ -21,17 +21,50 @@
          <span class='text-danger'>{{ form_errors(form.texto) }}</span> 
     </div>
     {% if id_categoria == 7  or id_categoria == 8 %}
+        
+        {% if id_categoria  == 8 %}
+
+            <div class="form-group">
+            <p class='opcionselect'>Selecciona una Opción:</p>
+                <select name='tcompra' id='tcompra' required class='form-control'>
+                    <option value='' disabled selected>Selecciona Alquiler o Venta</option>
+                    <option value='0'>Alquiler</option>
+                    <option value='1'>Venta</option>
+                </select>
+            </div>
+            <input type="hidden" name="tcompra_hidden" id="tcompra_hidden">
+
+        {% endif %}
 
         <div class="form-group">
-        {{ form_label(form.imagen) }}
-        {{ form_widget(form.imagen, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+        {{ form_label(form.telefono) }}
+        {{ form_widget(form.telefono, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+         <span class='text-danger'>{{ form_errors(form.telefono) }}</span> 
         </div>
 
+        <div class="form-group">
+            <div id="image-panel" class="form-group dropzone">
+            <div class='imgs_ico'><img src='../../image/img_ico.png'></div>
+                {{ form_label(form.imagenes, null, {'label_attr': {'style': 'padding: 30px;' }}) }}
+                {{ form_widget(form.imagenes, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                
+                <div id="selected-images"></div> 
+            </div>
+        </div>
+
+         <div class="form-group">
+        {{ form_label(form.ciudad) }}
+        {{ form_widget(form.ciudad, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+
+        </div>
+     
         <div class="form-group">
         {{ form_label(form.precio) }}
         {{ form_widget(form.precio, {'attr': {'class': 'form-control', 'rows': 5}}) }}
          <span class='text-danger'>{{ form_errors(form.precio) }}</span> 
         </div>
+
+       
 
    {% endif %}
 
@@ -41,6 +74,94 @@
 </div>
 
 <p><a href="">Volver</a></p>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imagePanel = document.getElementById('image-panel');
+    const input = document.getElementById('post_categoria_articulos_imagenes');
+    const selectedImages = document.getElementById('selected-images');
+
+
+ function createSelectedImage(file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'selected-image';
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = 'X';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = function() {
+                selectedImages.removeChild(selectedImageContainer);
+            };
+
+            const selectedImageContainer = document.createElement('div');
+            selectedImageContainer.className = 'selected-image-container';
+            selectedImageContainer.appendChild(img);
+            selectedImageContainer.appendChild(deleteBtn);
+
+            selectedImages.appendChild(selectedImageContainer);
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+
+    input.addEventListener('change', function() {
+        selectedImages.innerHTML = '';
+        Array.from(input.files).forEach(file => {
+            createSelectedImage(file);
+        });
+    });
+
+    imagePanel.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        imagePanel.classList.add('dragover');
+    });
+
+    imagePanel.addEventListener('dragleave', function() {
+        imagePanel.classList.remove('dragover');
+    });
+    const droppedFiles = [];
+    imagePanel.addEventListener('drop', function(e) {
+        e.preventDefault();
+        imagePanel.classList.remove('dragover');
+
+        Array.from(e.dataTransfer.files).forEach(file => {
+            droppedFiles.push(file);
+           createSelectedImage(file);
+        });
+   
+        const formData = new FormData();
+        droppedFiles.forEach(file => {
+            formData.append('imagenes[]', file);
+        });
+        
+        const newFileList = new DataTransfer();
+        droppedFiles.forEach(file => {
+            newFileList.items.add(file);
+        });
+
+        input.files = newFileList.files;
+        });
+
+
+    var tcompraElement = document.getElementById("tcompra");
+    if (tcompraElement !== null) {
+        tcompraElement.addEventListener("change", function() {
+            var selectedOption = this.options[this.selectedIndex];
+            document.getElementById("tcompra_hidden").value = selectedOption.value;
+    });
+}
+});
+
+
+</script>
+
+
 {% endblock %}
 
 

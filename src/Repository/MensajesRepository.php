@@ -103,4 +103,41 @@ return $qb->getQuery()->getResult();
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function findMensajesUsuario($usuario, $selectedUserId)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('(m.nickenvia = :usuarioId AND m.nickrecibo = :selectedUserId) OR (m.nickenvia = :selectedUserId AND m.nickrecibo = :usuarioId)')
+            ->setParameter('usuarioId', $usuario)
+            ->setParameter('selectedUserId', $selectedUserId)
+            ->orderBy('m.fecha', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+    public function findConversacion($usuarioActual, $usuarioSeleccionado)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('(m.nickenvia = :usuarioId AND m.nickrecibo = :selectedUserId) OR (m.nickenvia = :selectedUserId AND m.nickrecibo = :usuarioId)')
+            ->setParameter('usuarioId', $usuarioActual)
+            ->setParameter('selectedUserId', $usuarioSeleccionado)
+            ->orderBy('m.fecha', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countMensajesNoLeidos($usuarioActual)
+    {
+        return $this->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->where('m.nickrecibo = :usuario')
+            ->andWhere('m.leido = :leido')
+            ->setParameter('usuario', $usuarioActual)
+            ->setParameter('leido', false)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }
