@@ -1539,6 +1539,14 @@ margin-top: 130px;
   border: 3px solid #ffffff; 
 }
 
+.success-message {
+  background-color: #d4edda; /* Color de fondo verde */
+  color: #155724; /* Color de texto para el mensaje de éxito */
+  padding: 10px 15px; /* Añadir relleno para mejorar la legibilidad */
+  border-radius: 5px; /* Agregar bordes redondeados para un aspecto más elegante */
+  margin-bottom: 10px; /* Agregar margen inferior para separar del contenido siguiente */
+}
+
 
 
 

@@ -23,6 +23,9 @@
         </div>
     </div>
     <div class="right-column">
+        {% if app.request.query.get('edit_success') %}
+            <div id="mensaje" class="success-message">Los datos se han editado correctamente.</div>
+        {% endif %}
         <form method="post" action="{{ path('editar_perfil') }}" id="formEditarPerfil" enctype="multipart/form-data">
             
             <div class="form-group">
@@ -85,9 +88,7 @@
                 <textarea id="descripcion" name="descripcion" class="form-control custom-scrollbar" style="height: 150px;">{{ resultados.descripcion }}</textarea>
             </div>
             <button type="submit" id="btnEditar">Editar</button>
-            {% if app.request.query.get('edit_success') %}
-                <div id="mensaje">Los datos se han editado correctamente.</div>
-            {% endif %}
+            
         </form>
     </div>
 </div>
