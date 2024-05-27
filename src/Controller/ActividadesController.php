@@ -21,11 +21,12 @@ class ActividadesController extends AbstractController
     public function index(EntityManagerInterface $entityManager, SessionInterface $session): Response
     {
         $actividadesRepository = $entityManager->getRepository(Actividades::class);
-     
         $actividades = $actividadesRepository->findActividades();
-        
+        $fechaActual = new \DateTime();
+        $fechaActual->modify('-1 day');
         return $this->render('actividades/index.html.twig', [
             'results' => $actividades,
+            'fechaActual' => $fechaActual,
         ]);
     }
 
@@ -148,7 +149,7 @@ class ActividadesController extends AbstractController
                $actividad->setImg($nombreArchivo);
 
             }else{
-                $nombreArchivo ='/icos/icono_plan.jpg';
+                $nombreArchivo ='/icono_plan.jpg';
                 $actividad->setImg($nombreArchivo);
             }
             

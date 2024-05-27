@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Mensajes;
 use App\Entity\Usuarios;
+use App\Entity\Contactos;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\MensajesType;
@@ -47,6 +48,32 @@ class MensajesController extends AbstractController
     $mensajesRepository = $entityManager->getRepository(Mensajes::class);
     $usuarioRepository = $entityManager->getRepository(Usuarios::class);
     $usuario = $usuarioRepository->findOneBy(['nick' => $session->get('nombre')]);
+
+
+    if ($usuario) {
+    
+        $contactoBloqueado = $entityManager->getRepository(Contactos::class)->findOneBy([
+            'usuario' => $usuario->getId(), 
+            'contacto' => $id,
+            'bloqueado' => true
+        ]);
+
+        $usuarioBloqueado = $entityManager->getRepository(Contactos::class)->findOneBy([
+            'usuario' => $id,
+            'contacto' => $usuario->getId(),
+            'bloqueado' => true
+        ]);
+        
+        if ($contactoBloqueado || $usuarioBloqueado) {
+            return $this->render('usuarios/bloquear_usuario.html.twig', [
+                'userId' => $id,
+                'haBloqueado' => $contactoBloqueado ? true : false,
+                'bloqueadoPorContacto' => $usuarioBloqueado  ? true : false
+            ]);
+        }
+        
+    }
+
     $usuarioEnvia = $usuarioRepository->find($usuario->getId());  
     $usuarioRecibo = $usuarioRepository->find($id);  
     $nuevoMensaje = new Mensajes();

@@ -3,6 +3,7 @@
 {% block title %}Eventos{% endblock %}
 
 {% block body %}
+
     <div class="containerev">
         <h1>Listado de Eventos</h1>
         {% if eventos is not empty %}
@@ -25,4 +26,17 @@
             <p>No hay eventos disponibles.</p>
         {% endif %}
     </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+    $(document).ready(function() {
+
+        initializeLoadingScreen();
+                
+    });
+
+
+    </script>
 {% endblock %}

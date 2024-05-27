@@ -3,11 +3,21 @@
 {% block title %}Anuncios Generales{% endblock %}
 
 {% block body %}
-<div class="insertar">
+
+    <div class='div_portada'>
+        {% if not app.session.get('user_authenticated') %}
+        <div><span><img src='../../image/ico_login.jpg' style='width: 34px; height: 34px; border-radius: 20px;'></span><span style='margin-left: 6px;'><a href="{{ path('app_login') }}">Login</a></span></div>
+        <div><span><img src='../../image/ico_register.jpg' style='width: 34px; height: 34px; border-radius: 20px;'></span><span style='margin-left: 6px;'><a href="{{ path('app_registrar') }}">Registrar</a></span></div>
+        {% else %}
+        <div><p class='h2'>Bienvenido a la Red de Contactos,  {{ app.session.get('nombre')|capitalize }}</p></div>
+        {% endif %}
+    </div>
     {% if app.session.get('user_authenticated') %}
+    <div class="insertar">
         <p><a href="{{ path('app_insertar') }}"><div class='insertar_btn'>Publicar Anuncio</div></a></p>
+    </div>
     {% endif %}
-</div>
+    
     {% if results %}
         {% for post in results %}
             <div class='anunciosg'>
@@ -47,4 +57,19 @@
         <p>No se encontraron resultados.</p>
     {% endif %}
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+$(document).ready(function() {
+        
+        initializeLoadingScreen();
+        
+        $.get("{{ path('num_mensajes') }}", function(data) {
+            
+            $('#numMensajesSpan').text(data);
+        });
+    });
+
+</script>
 {% endblock %}

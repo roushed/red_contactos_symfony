@@ -35,7 +35,7 @@
     </div>
      
 </div>
-</div>
+
     {% else %}
 
         <p>
@@ -81,7 +81,10 @@
                         <div class="carousel-inner">
                             {% for key, imagen in imagenes %}
                                 <div class="carousel-item {% if key == 0 %}active{% endif %}">
-                                    <div class='img_anuncio'><img src='../../image/{{ imagen.nombre }}'></div>
+                                    <div class='img_anuncio'><img src='../../image/{{ imagen.nombre }}' class='carousel-image'></div>
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <p>{{ key + 1 }} / {{ imagenes|length }}</p>
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -94,6 +97,7 @@
                             
                         </a>
                     </div>
+                     
                 {% endif %}
                 </div>
             </div>
@@ -101,12 +105,25 @@
 
      {% endif %}
 
+                        <!-- Fullscreen image viewer -->
+                    <div id="fullscreenViewer" class="fullscreen-viewer" onclick="closeFullscreen()">
+                        <span class="close-btn" onclick="closeFullscreen()">&times;</span>
+                        <img id="fullscreenImage" src="" alt="Imagen ampliada">
+                    </div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+
+        $('.carousel-image').on('click', function () {
+            showFullscreen($(this).attr('src'));
+        });
+
+
         $('.ajax-form').submit(function (e) {
             e.preventDefault();
 
@@ -122,6 +139,15 @@
             });
         });
     });
+
+    showFullscreen = (src) => {
+        $('#fullscreenImage').attr('src', src);
+        $('#fullscreenViewer').css('display', 'flex');
+    }
+
+    closeFullscreen = () => {
+        $('#fullscreenViewer').css('display', 'none');
+    }
 </script>
 
 {% endblock %}

@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedImages = document.getElementById('selected-images');
 
 
- function createSelectedImage(file) {
+ createSelectedImage = (file) => {
         const reader = new FileReader();
 
         reader.onload = function(e) {

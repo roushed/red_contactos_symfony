@@ -4,36 +4,40 @@
 {% block title %}Usuarios{% endblock %}
 
 {% block body %}
-  
+
   {% if usuarios %}
 
   {% if app.session.get('user_authenticated') %}
-    <h2>Miembros más afines a ti:</h2>
+    <h2 style='margin-left: 122px;'>Miembros más afines:</h2>
       <div class='usuariosaf'>
-      {% for afinidad in afinidades %}
-    
-          <div class='usuario'>
-            <div class='user_img'>
-              <div><a href="{{ path('app_usuarios_ver', {'id': afinidad.id})}}"><img src='../../image/{{afinidad.foto}}'></a></div>
-              <div class='texto_user'>{{afinidad.nick}}</div>
-            </div>
-            <div class='u_online_year'>
-              <div class='user_online'>
-                {% if afinidad.online %}
-                  <div><img src='../../image/pverde.png'>Online</div>
-                {% endif %}
+      {% if afinidades is not empty %}
+        {% for afinidad in afinidades %}
+      
+            <div class='usuario'>
+              <div class='user_img'>
+                <div><a href="{{ path('app_usuarios_ver', {'id': afinidad.id})}}"><img src='../../image/{{afinidad.foto}}'></a></div>
+                <div class='texto_user'>{{afinidad.nick}}</div>
               </div>
-              <div class='user_year'>
-                
-                {% set today = 'now'|date('Y-m-d') %}
-                {% set birthdate = afinidad.edad|date('Y-m-d') %}
-                {% set age = (today|date('Y') - birthdate|date('Y'))|trim('0', 'left') %}
-                <div>{{ age }}</div>
+              <div class='u_online_year'>
+                <div class='user_online'>
+                  {% if afinidad.online %}
+                    <div><img src='../../image/pverde.png'>Online</div>
+                  {% endif %}
+                </div>
+                <div class='user_year'>
+                  
+                  {% set today = 'now'|date('Y-m-d') %}
+                  {% set birthdate = afinidad.edad|date('Y-m-d') %}
+                  {% set age = (today|date('Y') - birthdate|date('Y'))|trim('0', 'left') %}
+                  <div>{{ age }}</div>
+                </div>
               </div>
+              
             </div>
-            
-          </div>
-      {% endfor %}
+        {% endfor %}
+      {% else %}
+        <p>No se han encontrado usuarios compatibles.</p>
+      {% endif %} 
       </div>
   
   {% endif %}
@@ -88,8 +92,14 @@
 
  </div>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+
+  $(document).ready(function() {
+
+        initializeLoadingScreen();
+                
+    });
 
     document.getElementById('btn-buscar').addEventListener('click', function() {
         var edadDesde = document.getElementById('edad-desde').value;

@@ -52,6 +52,13 @@ class Usuarios
     #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Likes::class)]
     private Collection $no;
 
+
+    /**
+     * @var Collection<int, Contactos>
+     */
+    #[ORM\OneToMany(mappedBy: 'usuario', targetEntity: Contactos::class, cascade: ['persist', 'remove'])]
+    private Collection $contactos;
+
     public function __construct()
     {
         $this->actividadesUsuarios = new ArrayCollection();
@@ -59,6 +66,7 @@ class Usuarios
         $this->mensajes = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->no = new ArrayCollection();
+        $this->contactos = new ArrayCollection();
     }
 
 
@@ -290,6 +298,35 @@ class Usuarios
             }
         }
 
+        return $this;
+    }
+
+
+     /**
+     * @return Collection<int, Contactos>
+     */
+    public function getContactos(): Collection
+    {
+        return $this->contactos;
+    }
+
+    public function addContacto(Contactos $contacto): self
+    {
+        if (!$this->contactos->contains($contacto)) {
+            $this->contactos->add($contacto);
+            $contacto->setUsuario($this);
+        }
+        return $this;
+    }
+
+    public function removeContacto(Contactos $contacto): self
+    {
+        if ($this->contactos->removeElement($contacto)) {
+            // set the owning side to null (unless already changed)
+            if ($contacto->getUsuario() === $this) {
+                $contacto->setUsuario(null);
+            }
+        }
         return $this;
     }
 

@@ -50,18 +50,20 @@ class ActividadesRepository extends ServiceEntityRepository
     public function findActividades()
     {
         return $this->createQueryBuilder('a')
-            ->select('a.id, a.nombre, a.descripcion, a.fecha, a.direccion, a.municipio, a.img, a.hora, u.id as id_usuario, u.nick as nick,  p.foto as foto_perfil')
-            ->leftJoin('a.actividadesUsuarios', 'au')
-            ->leftJoin('au.nick', 'u')
-            ->leftJoin('u.perfiles', 'p')
-            //->where('a.fecha >= CURRENT_DATE()')
-            ->orderBy('a.fecha', 'ASC') 
-            ->groupBy('a.id')
-            ->getQuery()
-            ->getResult();
+        ->select('a.id, a.nombre, a.descripcion, a.fecha, a.direccion, a.municipio, a.img, a.hora, u.id as id_usuario, u.nick as nick, p.foto as foto_perfil, 
+                  (CASE WHEN a.fecha >= CURRENT_DATE() THEN 0 ELSE 1 END) AS is_past')
+        ->leftJoin('a.actividadesUsuarios', 'au')
+        ->leftJoin('au.nick', 'u')
+        //->where('a.fecha >= CURRENT_DATE()')
+        ->leftJoin('u.perfiles', 'p')
+        ->orderBy('is_past', 'ASC')  // Primero actividades futuras (is_past = 0), luego pasadas (is_past = 1)
+        ->addOrderBy('a.fecha', 'ASC', 'is_past = 0')  // Orden ascendente por fecha para actividades futuras
+        ->addOrderBy('a.fecha', 'DESC', 'is_past = 1')  // Orden descendente por fecha para actividades pasadas
+        ->groupBy('a.id')
+        ->getQuery()
+        ->getResult();
+
     }
-
-
     public function findActividad($id)
     {
         return $this->createQueryBuilder('a')

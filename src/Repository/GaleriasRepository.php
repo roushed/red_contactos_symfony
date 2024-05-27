@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Galerias;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<Galerias>
+ */
+class GaleriasRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Galerias::class);
+    }
+
+    //    /**
+    //     * @return Galerias[] Returns an array of Galerias objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('g.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Galerias
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findByPerfilId($perfilId)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.perfil = :perfilId')
+            ->setParameter('perfilId', $perfilId)
+            ->getQuery()
+            ->getResult();
+    }
+}

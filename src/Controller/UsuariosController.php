@@ -13,6 +13,8 @@ use DateInterval;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\Galerias;
+use App\Entity\Contactos;
 
 
 class UsuariosController extends AbstractController
@@ -109,7 +111,37 @@ class UsuariosController extends AbstractController
 
     #[Route('/usuarios/ver/{id}', name:'app_usuarios_ver', methods:['GET', 'POST'])]
 
-    public function ver(int $id, EntityManagerInterface $entityManager): Response{
+    public function ver(int $id, EntityManagerInterface $entityManager, SessionInterface $session): Response{
+        
+        $currentUserNick = $session->get('nombre');
+        if ($currentUserNick) {
+            $currentUser = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $currentUserNick]);
+
+            if ($currentUser) {
+                
+                $contactoBloqueado = $entityManager->getRepository(Contactos::class)->findOneBy([
+                    'usuario' => $currentUser->getId(),
+                    'contacto' => $id,
+                    'bloqueado' => true
+                ]);
+    
+                $bloqueadoPorContacto = $entityManager->getRepository(Contactos::class)->findOneBy([
+                    'usuario' => $id,
+                    'contacto' => $currentUser->getId(),
+                    'bloqueado' => true
+                ]);
+
+                if ($contactoBloqueado || $bloqueadoPorContacto) {
+
+                    return $this->render('usuarios/bloquear_usuario.html.twig' , [
+                        'userId' => $id,
+                        'haBloqueado' => $contactoBloqueado ? true : false,
+                        'bloqueadoPorContacto' => $bloqueadoPorContacto ? true : false
+                    ]);
+                }
+            }
+        }
+       
         
         $queryBuilder = $entityManager->createQueryBuilder();
         $aficiones = $queryBuilder
@@ -131,6 +163,10 @@ class UsuariosController extends AbstractController
         ->setParameter('perfil_id', $id) 
         ->getQuery()
         ->getResult();
+        
+        $perfil = $entityManager->getRepository(Perfiles::class)->findOneBy(['nick' => $usuario[0]['id']]);
+        $galeriaImagenes = $entityManager->getRepository(Galerias::class)->findBy(['perfil'=>$perfil->getId()]);
+     
         $ultimaConexion = $usuario[0]['fecha'];
         $hoy = new DateTime();
         $diff = $hoy->diff($ultimaConexion);
@@ -153,6 +189,7 @@ class UsuariosController extends AbstractController
             'results' => $usuario,
             'aficiones' => $aficiones,
             'ultima_v' => $ultimaV,
+            'galeriaimgs' =>$galeriaImagenes,
             
         ]);
 
@@ -212,5 +249,87 @@ class UsuariosController extends AbstractController
 
                 return new JsonResponse(['usuarios' => $usuarios]);
             }
+
+
+            #[Route('/bloquear-usuario/{id}', name: 'bloquear-usuario')]
+            public function bloquearUsuario(Request $request, int $id, EntityManagerInterface $entityManager, SessionInterface $session): Response
+            {
+
+                    $usuarioAutenticado = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $session->get('nombre')]);
+                    $usuarioBloqueado = $entityManager->getRepository(Usuarios::class)->find($id);
+        
+                    if ($usuarioAutenticado && $usuarioBloqueado) {
+
+                        $contactoExistente = $entityManager->getRepository(Contactos::class)->findOneBy([
+                            'usuario' => $usuarioAutenticado,
+                            'contacto' => $usuarioBloqueado,
+                            'bloqueado' => true
+                        ]);
+                
+                        if (!$contactoExistente) {
+                            $contacto = new Contactos();
+                            $contacto->setUsuario($usuarioAutenticado);
+                            $contacto->setContacto($usuarioBloqueado);
+                            $contacto->setBloqueado(true);
+                
+                            $entityManager->persist($contacto);
+                            $entityManager->flush();
+                        }
+
+                                        // Obtener estado de bloqueo para mostrar en la plantilla
+                        $haBloqueado = $entityManager->getRepository(Contactos::class)->findOneBy([
+                            'usuario' => $usuarioAutenticado,
+                            'contacto' => $usuarioBloqueado,
+                            'bloqueado' => true
+                        ]);
+
+                        $bloqueadoPorContacto = $entityManager->getRepository(Contactos::class)->findOneBy([
+                            'usuario' => $usuarioBloqueado,
+                            'contacto' => $usuarioAutenticado,
+                            'bloqueado' => true
+                        ]);
+                            
+                        
+                        return $this->render('usuarios/bloquear_usuario.html.twig', [
+                            'userId' => $id,
+                            'haBloqueado' => $haBloqueado ? true : false,
+                            'bloqueadoPorContacto' => $bloqueadoPorContacto ? true : false
+                        ]);
+                    }
+
+                    throw $this->createNotFoundException('Usuario no encontrado');
+              
+            }
+
+
+            #[Route('/desbloquear-usuario/{id}', name: 'desbloquear-usuario')]
+            public function desbloquearUsuario(Request $request, int $id, EntityManagerInterface $entityManager, SessionInterface $session): Response
+            {
+               
+                    $usuarioAutenticado = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $session->get('nombre')]);
+                    $usuarioBloqueado = $entityManager->getRepository(Usuarios::class)->find($id);
+        
+                    if ($usuarioAutenticado && $usuarioBloqueado) {
+                        
+                        $contacto = $entityManager->getRepository(Contactos::class)->findOneBy([
+                            'usuario' => $usuarioAutenticado,
+                            'contacto' => $usuarioBloqueado,
+                            'bloqueado' => true
+                        ]);
+                
+                        if ($contacto) {
+                            $entityManager->remove($contacto);
+                            $entityManager->flush();
+                        }
+                        
+                        
+                        return $this->redirectToRoute('app_usuarios_ver', ['id' => $id]);
+                    }
+
+                    throw $this->createNotFoundException('Usuario no encontrado');
+              
+            }
+
+           
 
 }

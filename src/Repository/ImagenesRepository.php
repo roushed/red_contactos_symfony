@@ -50,4 +50,13 @@ class ImagenesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByPostId($postId)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.post = :postId')
+            ->setParameter('postId', $postId)
+            ->getQuery()
+            ->getResult();
+    }
 }

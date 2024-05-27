@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar{% endblock %}
+
+{% block body %}
+
+{% if post.categoria.id == 7 or post.categoria.id == 8 %}
+
+   <div class="container-post">
+    <div class="left-column">
+        <p><img src="../../image/{{ imagenes[0].nombre }}" alt="Imagen del artículo"></p>
+        
+        <div class="gallery">
+            {% for imagen in imagenes %}
+                <div class="image-container">
+                    <img src="../../image/{{ imagen.nombre }}">
+                    {% if loop.length > 1 %}
+                        <button class="delete-button" data-imagen-id="{{ imagen.id }}">x</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div id="upload-container" data-post-id="{{ post.id }}">
+            <label for="file-input" id="upload-button">Cargar imagen</label>
+            <input type="file" id="file-input" style="display: none;" accept="image/*" multiple>
+        </div>
+    </div>
+    
+    <div class="right-column">
+        <form method="post" id="formEditarArticulo">
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control" value="{{ post.subject }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="texto">Descripcion</label>
+                <textarea id="texto" name="texto" class="form-control" style="height: 150px;">{{ post.texto }}</textarea>
+            </div>
+            {% if post.categoria.id == 8 %}
+                <div class="form-group">
+                    <p class='opcionselect'>Selecciona una Opción:</p>
+                    <select name='tcompra' id='tcompra' required class='form-control'>
+                        <option value='0' {% if post.adquisicion == 0 %} selected {% endif %}>Alquiler</option>
+                        <option value='1' {% if post.adquisicion == 1 %} selected {% endif %}>Venta</option>
+                    </select>
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="precio">Precio</label>
+                <input type="text" id="precio" name="precio" class="form-control" value="{{ post.precio }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <input type="text" id="telefono" name="telefono" class="form-control" value="{{ post.telefono }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="municipio">Municipio</label>
+                <select name="municipio" class="form-control">
+                    {% for municipio in municipios %}
+                        <option value="{{ municipio.id }}" {% if municipio.ciudad == post.municipio %} selected {% endif %}>{{ municipio.ciudad }}</option>
+                    {% endfor %}
+                </select>
+                <span class='text-danger'></span>
+            </div>
+
+            <button type="submit" id="btnEditar">Editar</button>
+        </form>
+    </div>
+</div>
+{% else %}
+
+    <div class="form-container">
+        <form method="post" id="formEditarPost">
+            <div class="form-group">
+                <label for="nombre">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control" value="{{ post.subject }}" />
+                <span class='text-danger'></span>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Texto</label>
+                <textarea id="texto" name="texto" class="form-control" style="height: 150px;">{{ post.texto }}</textarea>
+            </div>
+
+            <button type="submit" id="btnEditar">Editar</button>
+        </form>
+    </div>
+{% endif %}
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('file-input');
+    const uploadContainer = document.getElementById('upload-container');
+    const postId = uploadContainer.dataset.postId; 
+    
+     fileInput.addEventListener('change', function() {
+        const files = this.files;
+        const formData = new FormData();
+        formData.append('post_id', postId);
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('images[]', files[i]);
+        }
+
+        fetch('/guardar-imagenes', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const gallery = document.querySelector('.gallery');
+            gallery.innerHTML = '';
+
+            data.forEach(image => {
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container');
+
+                const img = document.createElement('img');
+                img.src = '/image/' + image.nombre;
+                imageContainer.appendChild(img);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-button');
+                deleteButton.setAttribute('data-imagen-id', image.id);
+                deleteButton.textContent = 'x';
+                deleteButton.addEventListener('click', eliminarImagen);
+
+                imageContainer.appendChild(deleteButton);
+                gallery.appendChild(imageContainer);
+            });
+        })
+        .catch(error => console.error('Error al guardar imágenes:', error));
+    });
+
+    const eliminarImagen = function() {
+        const imagenId = this.getAttribute('data-imagen-id');
+        const confirmar = confirm('¿Estás seguro de que deseas eliminar esta imagen?');
+        
+        if (confirmar) {
+            const imageContainer = this.previousElementSibling;
+            if (imageContainer) {
+                imageContainer.remove();
+            }
+            this.remove();
+
+            fetch('/eliminar-imagen/' + imagenId, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('La imagen se eliminó correctamente');
+                } else {
+                    console.error('Hubo un error al eliminar la imagen:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar la imagen:', error);
+            });
+
+             const galleryImages = document.querySelectorAll('.image-container');
+        if (galleryImages.length === 1) {
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach(button => {
+                button.style.display = 'none'; 
+            });
+        }
+        }
+    };
+
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', eliminarImagen);
+    });
+});
+</script>
+
+{% endblock %}

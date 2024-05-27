@@ -11,8 +11,15 @@
                 <div class="perfil_iz">
                     <div><img src='../../image/{{usuario.foto}}'></div>
                 </div>
+                <div class="dropdown">
+                    <span class='icopuntos' id="dropdownIcon"><img src='../../image/ico_puntos.png' style='width: 20px; height: 20px;'></span>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="{{ path('bloquear-usuario', {'id': usuario.id}) }}">Bloquear</a>
+                    </div>
+                </div>
 
                 <div class="perfil_der">
+                
                     <h1>{{usuario.nick}}</h1>
                     {% set today = 'now'|date('Y-m-d') %}
                     {% set birthdate = usuario.edad|date('Y-m-d') %}
@@ -58,9 +65,72 @@
                         {% endfor %}
                     </div>
                 </div>
+                <div>
+                    <div class='h3 pt-3'>Galeria de Fotos:</div>
+                    {% if galeriaimgs %}
+                    <div class="gallery">
+                        {% for imagen in galeriaimgs %}
+                            <div class="image-container"><img src="../../image/{{imagen.nombre}}" class='carousel-image'></div>
+                                        
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div>No se han publicado imágenes</div>
+                    {% endif %}
+
+                </div>
+              
+            </div>
+            <div id="fullscreenViewer" class="fullscreen-viewer" onclick="closeFullscreen()">
+                        <span class="close-btn" onclick="closeFullscreen()">&times;</span>
+                        <img id="fullscreenImage" src="" alt="Imagen ampliada">
             </div>
         </div>
     {% endfor %}
         </p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownIcon = document.getElementById('dropdownIcon');
+            const dropdownContent = document.getElementById('myDropdown');
+
+            dropdownIcon.addEventListener('mouseover', () => {
+                dropdownContent.classList.add('show');
+            });
+
+            dropdownIcon.addEventListener('mouseout', () => {
+                dropdownContent.classList.remove('show');
+            });
+
+            dropdownContent.addEventListener('mouseover', () => {
+                dropdownContent.classList.add('show');
+            });
+
+            dropdownContent.addEventListener('mouseout', () => {
+                dropdownContent.classList.remove('show');
+            });
+
+        });
+
+         $(document).ready(function () {
+            $('.carousel-image').on('click', function () {
+                showFullscreen($(this).attr('src'));
+            });
+
+        });
+
+    showFullscreen = (src) => {
+        $('#fullscreenImage').attr('src', src);
+        $('#fullscreenViewer').css('display', 'flex');
+    }
+
+    closeFullscreen = () => {
+        $('#fullscreenViewer').css('display', 'none');
+    }
+           
+    </script>
 {% endblock %}

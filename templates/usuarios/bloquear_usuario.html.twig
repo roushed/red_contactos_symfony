@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bloquear Usuario{% endblock %}
+
+{% block body %}
+ {% if haBloqueado and not bloqueadoPorContacto %}
+                <div class="mb-3">
+                    <span class='icopuntos' id="dropdownIcon"><img src='../../image/ico_puntos.png' style='width: 20px; height: 20px;'></span>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="{{ path('desbloquear-usuario', {'id': userId}) }}">Desbloquear</a>
+                    </div>
+                </div>
+            {% endif %}
+<div class="alert alert-warning" role="alert">
+    {% if haBloqueado and not bloqueadoPorContacto %}
+        Se ha bloqueado el contacto con este usuario.
+    {% elseif bloqueadoPorContacto %}
+        Este usuario te ha bloqueado.
+    {% endif %}
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+            const dropdownIcon = document.getElementById('dropdownIcon');
+            const dropdownContent = document.getElementById('myDropdown');
+            const optionBlock = document.getElementById('optiond');
+
+            dropdownIcon.addEventListener('mouseover', () => {
+                dropdownContent.classList.add('show');
+            });
+
+            dropdownIcon.addEventListener('mouseout', () => {
+                dropdownContent.classList.remove('show');
+            });
+
+            // Evitar que el dropdown se cierre si el ratón está sobre el contenido del dropdown
+            dropdownContent.addEventListener('mouseover', () => {
+                dropdownContent.classList.add('show');
+            });
+
+            dropdownContent.addEventListener('mouseout', () => {
+                dropdownContent.classList.remove('show');
+            });
+
+
+
+    });
+</script>
+{% endblock %}

@@ -48,7 +48,7 @@ body {
     background-size: 100% auto;
     background-position: center top;
     background-repeat: no-repeat;
-    height:25vh;
+    height:15vh;
 
     
 }
@@ -71,6 +71,7 @@ body {
     padding: 12px;
 
 }
+
 
 .anunciosg a{
     color: black;
@@ -231,12 +232,28 @@ body {
 
 .act_img{
     text-align:center;
+    position: relative;
+    display: inline-block;
 
 }
 
 .act_img img{
   width: 280px;
   height: 280px;
+}
+
+
+.actividad-convocada {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(128, 128, 128, 0.7); 
+  color: white;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .an_img {
@@ -246,12 +263,13 @@ body {
 
 .an_img img{
     width: 270px;
-    height: 270px;
+    height: 250px;
 }
 
 
 .cuadro_act{
     margin: 16px;
+    padding: 6px;
     border:1px dashed black;
 }
 
@@ -492,6 +510,20 @@ height: 9px;
     justify-content: left;
   }
 
+  .perfil_iz {
+    position: relative; 
+}
+
+.dropdown {
+    position: absolute;
+    bottom: -4px;
+    right: 25px;
+    background: rgba(255, 255, 255, 0.8); 
+    border-radius: 12px;
+    opacity: 1.0;
+    height: 3vh;
+}
+
   .perfil_iz img{
     width: 300px;
     height: 300px;
@@ -624,6 +656,7 @@ form button{
 }
 
 .panel {
+  margin: 0 auto;
   display: flex;
   justify-content: center;
 }
@@ -632,8 +665,22 @@ form button{
   width: 160px;
   cursor: pointer;
   border: 1px solid black;
- 
+  border-radius: 6px;
+  height: 50vh;
+  overflow-y: auto;
 }
+
+
+
+.panel-izquierdo::-webkit-scrollbar {
+  width: 5px;
+}
+
+.panel-izquierdo::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 5px;
+}
+
 
 .panel-izquierdo .badge{
 
@@ -658,7 +705,8 @@ form button{
 
 #panel-derecho {
   height: 50vh; 
-  overflow-y: auto; 
+  overflow-y: auto;
+  border-radius: 4px; 
 }
 
 
@@ -700,7 +748,7 @@ form button{
 
   text-align: center;
   margin-top: 12px;
-  margin-right: 24px;
+  margin-left: 175px;
 }
 
 
@@ -839,7 +887,7 @@ form button{
 }
 
 .icon_msg{
-  width: 25px;
+  width: 80px;
   background-color: white;
   padding: 5px;
   border-radius: 12px;
@@ -852,7 +900,7 @@ form button{
 }
 
 .num_msgs {
-  background-color: black;
+  background-color: white;
   padding: 8px;
   border-radius: 50%; 
   width: 23px; 
@@ -892,7 +940,15 @@ form button{
    width: 37px;
    height: 37px;
    border-radius: 20px;
-   margin: 0px;
+   margin-left: 12px;
+}
+
+.hover-grayscale {
+  transition: filter 0.3s ease; 
+}
+
+.hover-grayscale:hover {
+  filter: grayscale(100%); 
 }
 
 .s_nick{
@@ -910,7 +966,7 @@ form button{
 .insertar{
 
   width: 68%;
-  margin-left: 130px;
+  margin-left: 142px;
 }
 
 .busqueda_a{
@@ -1031,11 +1087,11 @@ form button{
 }
 
 .img_anuncio img {
-  width: 720px; /* Ajustar la anchura al 100% del contenedor */
+  width: 720px; 
   height:550px;
   
-  max-height: 800px; /* Establecer una altura máxima opcional para limitar el tamaño */
-  object-fit: cover; /* Ajustar la imagen dentro del contenedor sin distorsionarla */
+  max-height: 800px; 
+  object-fit: cover; 
 }
 
 
@@ -1098,12 +1154,10 @@ margin-top: 130px;
 
 .like-btn,
 .unlike-btn {
-    /* Define el tamaño del div para que coincida con el tamaño de la imagen */
+   
     width: 23px;
     height: 23px;
-    /* Establece la imagen de fondo */
     background-image: url('../../image/corazonw_icon.png');
-    /* Ajusta la imagen de fondo al tamaño del div */
     background-size: cover;
 }
 .unlike-btn {
@@ -1139,6 +1193,7 @@ margin-top: 130px;
 .filtro{
   width: 700px;
   background-color: black;
+  opacity: 0.9;
   justify-content: center;
   display: flex;
   color: white;
@@ -1158,3 +1213,332 @@ margin-top: 130px;
   display: flex;
   justify-content: center;
 }
+
+.anunciosperfil {
+  background-color: azure;
+  border: 2px dashed black;
+  width: calc(33.33% - 30px); 
+  margin: 15px;
+  padding: 12px;
+  box-sizing: border-box; 
+  text-align: center; 
+}
+
+.anunciosperfil a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.ap_estructura {
+  justify-content: left; 
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.act_estructura{
+
+  padding: 20px;
+  justify-content: left;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.actperfil{
+  margin: 14px;
+  padding: 12px;
+  border:1px dashed black;
+  background-color: azure;
+}
+.actperfil img{
+  width: 270px;
+  height: 270px;
+}
+
+.gallery{
+
+  width: 380px;
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+
+}
+
+.gallery div{
+
+  padding: 6px;
+  padding: 6px;
+}
+.gallery img{
+
+  width: 90px;
+  height: 90px;
+}
+
+.delete-button {
+  width: 20px; 
+  height: 20px; 
+  font-size: 14px; 
+  padding: 0; 
+  margin: 0; 
+  line-height: 1; 
+}
+
+#upload-container {
+  margin-top: 20px; 
+}
+
+#upload-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.carousel-caption {
+  width: 60px;
+  height: 35px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold
+}
+
+
+.fullscreen-viewer {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.fullscreen-viewer img {
+  max-width: 90%;
+  max-height: 90%;
+  transform: translateX(10%); 
+}
+
+.close-btn {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 30%;
+
+}
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.show {
+  display: block;
+}
+
+.div_portada{
+
+  margin: 0 auto;
+  width: 850px;
+  height: 300px;
+  background: black;
+  opacity: 0.9;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.div_portada div{
+
+  margin: 120px;
+  color: white;
+}
+
+
+.div_portada a{
+  text-decoration: none;
+  color: white;
+}
+
+.div_portada a:hover{
+  color: gray;
+}
+
+.profile-container {
+  display: flex;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.left-column {
+  flex: 0 0 30%;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.right-column {
+  flex: 1;
+  padding: 20px;
+}
+
+.left-column p img {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-container {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.image-container img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#upload-container {
+  margin-top: 20px;
+}
+
+#upload-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.right-column .form-group {
+  margin-bottom: 15px;
+}
+
+.right-column .form-control {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.right-column button[type="submit"] {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#mensaje {
+  margin-top: 10px;
+  color: green;
+}
+
+
+.container-act, .container-post {
+  display: flex;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.form-container {
+  width: 1100px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; 
+}
+
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #ffffff; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #000000; 
+  border-radius: 6px; 
+  border: 3px solid #ffffff; 
+}
+
+
+
+

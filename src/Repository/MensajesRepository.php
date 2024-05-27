@@ -49,34 +49,43 @@ return $result;
     {
         $qb = $this->createQueryBuilder('m');
 
-$qb->select('u, p, p.foto, (
-        SELECT COUNT(m2.id) 
-        FROM App\Entity\Mensajes m2 
-        WHERE m2.nickenvia = u AND m2.nickrecibo = :usuarioActual AND m2.leido = false
-        AND m2.leido = false
-    ) AS mensajes_no_leidos')
-    ->from('App\Entity\Usuarios', 'u')
-    ->leftJoin('u.perfiles', 'p')
-    ->where($qb->expr()->orX(
-        $qb->expr()->in('u.id', $this->_em->createQueryBuilder()
+        $subQuery1 = $this->_em->createQueryBuilder()
             ->select('DISTINCT IDENTITY(m3.nickenvia)')
             ->from('App\Entity\Mensajes', 'm3')
             ->where('m3.nickrecibo = :usuarioActual')
-            ->setParameter('usuarioActual', $usuarioActual)
-            ->getDQL()
-        ),
-        $qb->expr()->in('u.id', $this->_em->createQueryBuilder()
+            ->getDQL();
+    
+        $subQuery2 = $this->_em->createQueryBuilder()
             ->select('DISTINCT IDENTITY(m4.nickrecibo)')
             ->from('App\Entity\Mensajes', 'm4')
             ->where('m4.nickenvia = :usuarioActual')
-            ->setParameter('usuarioActual', $usuarioActual)
-            ->getDQL()
-        )
-    ))
-    ->andWhere('u != :usuarioActual')
-    ->setParameter('usuarioActual', $usuarioActual);
-
-return $qb->getQuery()->getResult();
+            ->getDQL();
+    
+        // Subquery to check for blocked users
+        $subQueryBlocked = $this->_em->createQueryBuilder()
+            ->select('c.id')
+            ->from('App\Entity\Contactos', 'c')
+            ->where('c.bloqueado = true AND (c.usuario = :usuarioActual AND c.contacto = u OR c.usuario = u AND c.contacto = :usuarioActual)')
+            ->getDQL();
+    
+        $qb->select('u, p, p.foto, (
+                SELECT COUNT(m2.id) 
+                FROM App\Entity\Mensajes m2 
+                WHERE m2.nickenvia = u AND m2.nickrecibo = :usuarioActual AND m2.leido = false
+            ) AS mensajes_no_leidos')
+            ->from('App\Entity\Usuarios', 'u')
+            ->leftJoin('u.perfiles', 'p')
+            ->where($qb->expr()->orX(
+                $qb->expr()->in('u.id', $subQuery1),
+                $qb->expr()->in('u.id', $subQuery2)
+            ))
+            ->andWhere('u != :usuarioActual')
+            ->andWhere($qb->expr()->not(
+                $qb->expr()->exists($subQueryBlocked)
+            ))
+            ->setParameter('usuarioActual', $usuarioActual);
+    
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

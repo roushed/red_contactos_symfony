@@ -46,9 +46,16 @@ class Perfiles
     #[ORM\Column(length: 60)]
     private ?string $email = null;
 
+    /**
+     * @var Collection<int, Galerias>
+     */
+    #[ORM\OneToMany(mappedBy: 'perfil', targetEntity: Galerias::class)]
+    private Collection $galerias;
+
     public function __construct()
     {
         $this->perfilAficiones = new ArrayCollection();
+        $this->galerias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +209,36 @@ class Perfiles
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Galerias>
+     */
+    public function getGalerias(): Collection
+    {
+        return $this->galerias;
+    }
+
+    public function addGaleria(Galerias $galeria): static
+    {
+        if (!$this->galerias->contains($galeria)) {
+            $this->galerias->add($galeria);
+            $galeria->setPerfil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGaleria(Galerias $galeria): static
+    {
+        if ($this->galerias->removeElement($galeria)) {
+            // set the owning side to null (unless already changed)
+            if ($galeria->getPerfil() === $this) {
+                $galeria->setPerfil(null);
+            }
+        }
 
         return $this;
     }

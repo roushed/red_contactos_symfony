@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar{% endblock %}
+
+{% block body %}
+<div class="container-act">
+    <div class="left-column">
+        <p><img src="../../image/{{actividad.img}}" alt="Imagen de la actividad"></p>
+    </div>
+    <div class="right-column">
+        <form method="post" id="formEditarActividad" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" value="{{ actividad.nombre }}" />
+                <span class='text-danger'></span>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" class="form-control" style="height: 150px;">{{ actividad.descripcion }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="imagen">Imagen</label>
+                <input type="file" id="imagen" name="imagen" class="form-control">
+                <span class='text-danger'></span>
+            </div>
+
+            <div class="form-group">
+                <label for="cantidad">Nº Inscritos</label>
+                <input type="number" id="cantidad" name="cantidad" class="form-control" min="{{ usuarios|length }}" value="{{ usuarios|length }}" oninput="validarMinimo(this)" />
+                <span class='text-danger'></span>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" name="fecha" class="form-control" value="{{ actividad.fecha|date('Y-m-d') }}" />
+                <span class='text-danger'></span>
+            </div>
+
+            <div class="form-group">
+                <label for="hora">Hora</label>
+                <input type="time" id="hora" name="hora" class="form-control" value="{{ actividad.hora|date('H:i') }}" />
+                <span class='text-danger'></span>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Direccion</label>
+                <input type="text" id="direccion" name="direccion" class="form-control" value="{{ actividad.direccion }}" />
+                <span class='text-danger'></span>
+            </div>
+
+            <div class="form-group">
+                <label for="municipio">Municipio</label>
+                <select name="municipio" class="form-control">
+                    {% for municipio in municipios %}
+                        <option value="{{ municipio.id }}" {% if municipio.ciudad == actividad.municipio %} selected {% endif %}>{{ municipio.ciudad }}</option>
+                    {% endfor %}
+                </select>
+                <span class='text-danger'></span>
+            </div>
+
+            <button type="submit" id="btnEditar">Editar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+ validarMinimo = (input) => {
+    if (input.value < {{ usuarios|length }}) {
+        input.value = {{ usuarios|length }};
+    }
+}
+</script>
+
+{% endblock %}
+
+

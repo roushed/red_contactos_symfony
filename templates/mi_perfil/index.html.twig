@@ -1,0 +1,311 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MiPerfilController!{% endblock %}
+
+{% block body %}
+ {% set today = 'now'|date('Y-m-d') %}
+{% set birthdate = resultados.edad|date('Y-m-d') %}
+{% set age = (today|date('Y') - birthdate|date('Y'))|trim('0', 'left') %}
+<div class="profile-container">
+    <div class="left-column">
+        <p><img src="../../image/{{resultados.foto}}" alt="Foto de perfil"></p>
+        <div class="gallery">
+            {% for imagen in imagenes %}
+                <div class="image-container">
+                    <img src="../../image/{{imagen.nombre}}" alt="Imagen de galería">
+                    <button class="delete-button" data-imagen-id="{{ imagen.id }}">x</button>
+                </div>
+            {% endfor %}
+        </div>
+        <div id="upload-container" data-perfil-id="{{ resultados.id }}">
+            <label for="file-input" id="upload-button">Cargar imagen</label>
+            <input type="file" id="file-input" style="display: none;" accept="image/*" multiple>
+        </div>
+    </div>
+    <div class="right-column">
+        <form method="post" action="{{ path('editar_perfil') }}" id="formEditarPerfil" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" value="{{ resultados.nombre }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" name="apellidos" class="form-control" value="{{ resultados.apellidos }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{ resultados.email }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="imagen">Imagen</label>
+                <input type="file" id="imagen" name="imagen" class="form-control">
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-control" value="{{ resultados.password }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="aficiones-container">
+                {% for aficion in listaAficiones %}
+                    {% set isChecked = false %}
+                    {% for aficionUsuario in aficionesUsuario %}
+                        {% if aficionUsuario.id == aficion.id %}
+                            {% set isChecked = true %}
+                        {% endif %}
+                    {% endfor %}
+                    <div class="aficion-checkbox {% if isChecked %} selected {% endif %}">
+                        <input type="checkbox" class="form-check-input" id="aficion{{ aficion.id }}" name="aficiones[]" value="{{ aficion.id }}"
+                        {% if isChecked %} checked {% endif %}>
+                        <label class="form-check-label" for="aficion{{ aficion.id }}">{{ aficion.nombre }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="edad" name="edad" class="form-control" value="{{ resultados.edad }}" />
+                <span class='text-danger'></span>
+            </div>
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <select name="ciudad" class="form-control">
+                    {% for municipio in municipios %}
+                        <option value="{{ municipio.id }}" {% if municipio.ciudad == resultados.ciudad %} selected {% endif %}>
+                            {{ municipio.ciudad }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" class="form-control custom-scrollbar" style="height: 150px;">{{ resultados.descripcion }}</textarea>
+            </div>
+            <button type="submit" id="btnEditar">Editar</button>
+            {% if app.request.query.get('edit_success') %}
+                <div id="mensaje">Los datos se han editado correctamente.</div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+<h2>Mis Anuncios</h2>
+<div class='ap_estructura'>
+    {% for post in posts %}
+                <div class='anunciosperfil'>
+                
+                    <div><a href="{{ path('app_porcategoria_ver', {'id': post.id}) }}">{{ post.subject }}</a></div>
+                    <div>{{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }}</div>
+                    <div><a href="{{ path('editar_post', {'id': post.id}) }}"><img src='../../image/editar_ico.png' style='width: 30px; height: 30px;'></a> |<a class="eliminar-post" data-post-id="{{ post.id }}" style="cursor: pointer;"> <img src='../../image/eliminar_ico.png' style='width: 30px; height: 30px;'></a></div>
+                    
+                
+                </div>
+    {% endfor %}
+</div>
+<h2>Mis Actividades</h2>
+<div class='act_estructura'>
+    {% for actividad in actividades %}
+            <div class='actperfil'>
+                <a href="/actividades/ver/{{ actividad.id }}"><div><img src='../../image/{{actividad.img}}'></a></div>
+                <div class='h5'>{{actividad.nombre}}</div>
+                <div>{{actividad.municipio}}</div>             
+                <div>{{ actividad.fecha|date('d') }} {{meses[actividad.fecha|date('F')] }}</div>
+                 <div><a href="{{ path('editar_actividad', {'id': actividad.id}) }}"><img src='../../image/editar_ico.png' style='width: 30px; height: 30px;'></a> | <a class="eliminar-actividad" data-actividad-id="{{ actividad.id }}" style="cursor: pointer;"> <img src='../../image/eliminar_ico.png' style='width: 30px; height: 30px;'></a></div>
+            </div>
+    {% endfor %}
+</div>
+
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const formcheck=document.querySelectorAll('.aficion-checkbox');
+    const fileInput = document.getElementById('file-input');
+    const uploadContainer = document.getElementById('upload-container');
+    const perfilId = uploadContainer.dataset.perfilId; // Accede al atributo data-post-id
+
+
+    formcheck.forEach(boton => {
+        boton.addEventListener('click', function(e) {
+            // Encuentra el div .aficion-checkbox desde el elemento clicado
+            const aficionCheckbox = e.target.closest('.aficion-checkbox');
+            
+            // Si encontramos el div .aficion-checkbox
+            if (aficionCheckbox) {
+                var checkbox = aficionCheckbox.querySelector('input[type="checkbox"]');
+                
+                // Cambia el estado del checkbox
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+
+                    // Cambia la clase 'selected' según el estado del checkbox
+                    if (checkbox.checked) {
+                        aficionCheckbox.classList.add('selected');
+                    } else {
+                        aficionCheckbox.classList.remove('selected');
+                    }
+                }
+            }
+        });
+    });
+   
+    fileInput.addEventListener('change', function() {
+    const files = this.files;
+    const formData = new FormData();
+    formData.append('perfil_id', perfilId);
+
+    for (let i = 0; i < files.length; i++) {
+        formData.append('images[]', files[i]);
+    }
+
+    fetch('/guardar-galerias', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        const gallery = document.querySelector('.gallery');
+        gallery.innerHTML = '';
+
+        data.forEach(image => {
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container');
+            const img = document.createElement('img');
+            img.src = '/image/' + image.nombre;
+            imageContainer.appendChild(img);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-button');
+            deleteButton.setAttribute('data-imagen-id', image.id);
+            deleteButton.textContent = 'x';
+            deleteButton.addEventListener('click', eliminarImagen);
+
+            // Agrega la imagen y el botón de eliminar al mismo contenedor
+            imageContainer.appendChild(deleteButton);
+
+            // Agrega el contenedor de la imagen y el botón al contenedor de la galería
+            gallery.appendChild(imageContainer);
+        });
+    })
+    .catch(error => console.error('Error al guardar imágenes:', error));
+});
+
+
+
+
+
+
+    const eliminarPost = function(event) {
+        
+        event.preventDefault();
+        const postId = this.getAttribute('data-post-id');
+        const confirmar = confirm('¿Estás seguro de que deseas eliminar este post?');
+        
+        if (confirmar) {
+            fetch(`/eliminar-post/${postId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('El post se eliminó correctamente');
+                    // Eliminar dinámicamente el post de la lista
+                    this.closest('.anunciosperfil').remove();
+                } else {
+                    console.error('Hubo un error al eliminar el post:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar el post:', error);
+            });
+        }
+    };
+
+    const eliminarPostLinks = document.querySelectorAll('.eliminar-post');
+    eliminarPostLinks.forEach(link => {
+        link.addEventListener('click', eliminarPost);
+    });
+
+
+
+
+    const eliminarActividad = function(event) {
+        event.preventDefault();
+        const actividadId = this.getAttribute('data-actividad-id');
+        const confirmar = confirm('¿Estás seguro de que deseas eliminar esta actividad?');
+        
+        if (confirmar) {
+            fetch(`/eliminar-actividad/${actividadId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('La actividad se eliminó correctamente');
+            
+                    this.closest('.actperfil').remove();
+                } else {
+                    console.error('Hubo un error al eliminar la actividad:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar la actividad:', error);
+            });
+        }
+    };
+
+    const eliminarActividadLinks = document.querySelectorAll('.eliminar-actividad');
+    eliminarActividadLinks.forEach(link => {
+        link.addEventListener('click', eliminarActividad);
+    });
+
+
+
+
+
+     const eliminarImagen = function() {
+        const imagenId = this.getAttribute('data-imagen-id');
+        const confirmar = confirm('¿Estás seguro de que deseas eliminar esta imagen?');
+        
+        if (confirmar) {
+            const imageContainer = this.previousElementSibling;
+            if (imageContainer) {
+                imageContainer.remove();
+            }
+            this.remove();
+
+            fetch('/eliminar-galeria/' + imagenId, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('La imagen se eliminó correctamente');
+                } else {
+                    console.error('Hubo un error al eliminar la imagen:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar la imagen:', error);
+            });
+
+           
+        }
+    };
+
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', eliminarImagen);
+    });
+    
+
+
+
+
+
+
+});
+
+
+</script>
+{% endblock %}

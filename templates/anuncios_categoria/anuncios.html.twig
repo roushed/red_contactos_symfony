@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-function handleLikeClick(likeBtn) {
+handleLikeClick = (likeBtn) => {
     let postId = likeBtn.dataset.postId;
    
 
@@ -178,7 +178,7 @@ function handleLikeClick(likeBtn) {
     parentElement.append(unlikeBtn);
 }
 
-function handleUnlikeClick(unlikeBtn) {
+handleUnlikeClick = (unlikeBtn) => {
     let postId = unlikeBtn.dataset.postId;
    
 
@@ -193,8 +193,6 @@ function handleUnlikeClick(unlikeBtn) {
     parentElement.append(likeBtn);
     
 }
-
-
 
 
 document.getElementById('btn-buscar').addEventListener('click', function() {

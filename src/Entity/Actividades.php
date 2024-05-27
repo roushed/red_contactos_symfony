@@ -40,7 +40,7 @@ class Actividades
     #[ORM\OneToMany(mappedBy: 'id_actividad', targetEntity: ActividadesUsuarios::class)]
     private Collection $actividadesUsuarios;
 
-    #[ORM\OneToMany(mappedBy: 'actividad', targetEntity: Comentariosa::class)]
+    #[ORM\OneToMany(mappedBy: 'actividad', targetEntity: Comentariosa::class, cascade: ['remove'])]
     private Collection $comentariosas;
 
     #[ORM\Column]
