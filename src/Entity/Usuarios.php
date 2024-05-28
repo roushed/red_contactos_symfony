@@ -22,19 +22,19 @@ class Usuarios
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: ActividadesUsuarios::class)]
+    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: ActividadesUsuarios::class, cascade: ['persist', 'remove'] , orphanRemoval: true)]
     private Collection $actividadesUsuarios;
 
-    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Perfiles::class)]
+    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Perfiles::class, cascade: ['persist', 'remove'] , orphanRemoval: true)]
     private Collection $perfiles;
 
-    #[ORM\OneToMany(mappedBy: 'nickrecibo', targetEntity: Mensajes::class)]
+    #[ORM\OneToMany(mappedBy: 'nickrecibo', targetEntity: Mensajes::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $mensajes;
 
-    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Posts::class)]
+    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Posts::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $posts;
     
-    #[ORM\OneToOne(targetEntity: Perfiles::class, mappedBy: 'nick', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Perfiles::class, mappedBy: 'nick', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?Perfiles $perfil = null;
 
     #[ORM\Column]
@@ -49,14 +49,14 @@ class Usuarios
     /**
      * @var Collection<int, Likes>
      */
-    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Likes::class)]
+    #[ORM\OneToMany(mappedBy: 'nick', targetEntity: Likes::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $no;
 
 
     /**
      * @var Collection<int, Contactos>
      */
-    #[ORM\OneToMany(mappedBy: 'usuario', targetEntity: Contactos::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'usuario', targetEntity: Contactos::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $contactos;
 
     public function __construct()

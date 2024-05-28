@@ -420,6 +420,30 @@ class MiPerfilController extends AbstractController
         }
 
 
+
+
+
+        #[Route('/eliminar_usuario', name: 'eliminar_usuario', methods: ['POST'])]
+            public function eliminarUsuario(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response
+            {
+                $usuario = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $session->get('nombre')]);
+
+                if ($usuario) {
+                    $entityManager->remove($usuario);
+                    $entityManager->flush();
+
+                    $session->remove('user_authenticated');
+                    $session->remove('nombre');
+                    $session->remove('imagen');
+                    $session->invalidate();
+
+                    return $this->redirectToRoute('app_login');
+                }
+
+                return new Response('Usuario no encontrado', 404);
+            }
+
+
 }
 
 

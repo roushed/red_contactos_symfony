@@ -77,8 +77,9 @@
                      <div>Publicado {{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }} {{ post.fecha|date('Y') }}</div>
                      {% if imagenes is not empty %}
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                        
+    
                         <div class="carousel-inner">
+                            <div class='h2'>Galería:</div>
                             {% for key, imagen in imagenes %}
                                 <div class="carousel-item {% if key == 0 %}active{% endif %}">
                                     <div class='img_anuncio'><img src='../../image/{{ imagen.nombre }}' class='carousel-image'></div>

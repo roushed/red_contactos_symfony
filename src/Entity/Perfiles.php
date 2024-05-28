@@ -17,6 +17,7 @@ class Perfiles
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'perfiles')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Usuarios $nick = null;
 
     #[ORM\Column(length: 40, nullable: true)]
@@ -40,7 +41,7 @@ class Perfiles
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $foto = null;
 
-    #[ORM\OneToMany(mappedBy: 'perfil', targetEntity: PerfilAficiones::class)]
+    #[ORM\OneToMany(mappedBy: 'perfil', targetEntity: PerfilAficiones::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $perfilAficiones;
 
     #[ORM\Column(length: 60)]
@@ -49,7 +50,7 @@ class Perfiles
     /**
      * @var Collection<int, Galerias>
      */
-    #[ORM\OneToMany(mappedBy: 'perfil', targetEntity: Galerias::class)]
+    #[ORM\OneToMany(mappedBy: 'perfil', targetEntity: Galerias::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $galerias;
 
     public function __construct()

@@ -88,6 +88,7 @@
                 <textarea id="descripcion" name="descripcion" class="form-control custom-scrollbar" style="height: 150px;">{{ resultados.descripcion }}</textarea>
             </div>
             <button type="submit" id="btnEditar">Editar</button>
+             <div class='baja'><a href="#" id="bajaUsuario">Borrar Cuenta</a></div>
             
         </form>
     </div>
@@ -300,7 +301,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
 
-
+     document.getElementById('bajaUsuario').addEventListener('click', function (event) {
+        event.preventDefault();
+        if (confirm('¿Estás seguro de que deseas dar de baja tu cuenta?')) {
+            document.getElementById('darDeBajaForm').submit();
+        }
+    });
 
 
 
@@ -309,4 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
+<form id="darDeBajaForm" action="{{ path('eliminar_usuario') }}" method="post" style="display: none;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete_user') }}">
+</form>
 {% endblock %}

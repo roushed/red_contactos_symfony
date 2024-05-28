@@ -1147,6 +1147,7 @@ form button{
 
 }
 
+
 .carousel-inner{
 margin-top: 130px;
 
@@ -1540,13 +1541,24 @@ margin-top: 130px;
 }
 
 .success-message {
-  background-color: #d4edda; /* Color de fondo verde */
-  color: #155724; /* Color de texto para el mensaje de éxito */
-  padding: 10px 15px; /* Añadir relleno para mejorar la legibilidad */
-  border-radius: 5px; /* Agregar bordes redondeados para un aspecto más elegante */
-  margin-bottom: 10px; /* Agregar margen inferior para separar del contenido siguiente */
+  background-color: #d4edda; 
+  color: #155724; 
+  padding: 10px 15px; 
+  border-radius: 5px; 
+  margin-bottom: 10px; 
 }
 
+.baja{
+
+  margin-top: 24px; 
+  font-size: 20px; 
+  font-weight: bold;
+
+}
+
+.baja a{
+  color: black;
+}
 
 
 
