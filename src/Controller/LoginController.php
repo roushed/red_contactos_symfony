@@ -123,8 +123,6 @@ class LoginController extends AbstractController
                 foreach ($aficionesSeleccionadas as $aficionSeleccionada) {
                   
                     $perfilAficion = new PerfilAficiones();
-            
-                   
                     $perfilAficion->setPerfil($perfil);
                     $perfilAficion->setAficion($aficionSeleccionada);
             

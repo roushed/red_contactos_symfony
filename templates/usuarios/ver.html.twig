@@ -11,12 +11,16 @@
                 <div class="perfil_iz">
                     <div><img src='../../image/{{usuario.foto}}'></div>
                 </div>
-                <div class="dropdown">
-                    <span class='icopuntos' id="dropdownIcon"><img src='../../image/ico_puntos.png' style='width: 20px; height: 20px;'></span>
-                    <div id="myDropdown" class="dropdown-content">
-                        <a href="{{ path('bloquear-usuario', {'id': usuario.id}) }}">Bloquear</a>
-                    </div>
-                </div>
+                {% if app.session.get('user_authenticated') %}
+                    {% if usuario.nick != app.session.get('nombre') %}
+                        <div class="dropdown">
+                            <span class='icopuntos' id="dropdownIcon"><img src='../../image/ico_puntos.png' style='width: 20px; height: 20px;'></span>
+                            <div id="myDropdown" class="dropdown-content">
+                                <a href="{{ path('bloquear-usuario', {'id': usuario.id}) }}">Bloquear</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
 
                 <div class="perfil_der">
                 
