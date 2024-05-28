@@ -22,6 +22,9 @@ class MensajesController extends AbstractController
     #[Route('/mensajes_av', name: 'app_mensajesav')]
     public function mensajes(EntityManagerInterface $entityManager, SessionInterface $session, Request $request): Response
     {
+        if (!$session->has('user_authenticated') || !$session->get('user_authenticated')) {
+            return $this->redirectToRoute('app_login');
+        }
        
         $usuarioRepository = $entityManager->getRepository(Usuarios::class);
         $mensajesRepository = $entityManager->getRepository(Mensajes::class);
@@ -44,7 +47,9 @@ class MensajesController extends AbstractController
     public function mostrar(int $id, EntityManagerInterface $entityManager, SessionInterface $session, Request $request): Response
     {
        
-
+    if (!$session->has('user_authenticated') || !$session->get('user_authenticated')) {
+        return $this->redirectToRoute('app_login');
+    }
     $mensajesRepository = $entityManager->getRepository(Mensajes::class);
     $usuarioRepository = $entityManager->getRepository(Usuarios::class);
     $usuario = $usuarioRepository->findOneBy(['nick' => $session->get('nombre')]);

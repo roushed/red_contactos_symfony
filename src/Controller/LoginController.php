@@ -83,7 +83,7 @@ class LoginController extends AbstractController
 
 
     #[Route('/registro', name: 'app_registrar', methods: ['GET', 'POST'])]
-    public function registrar(Request $request, EntityManagerInterface $entityManager): Response{
+    public function registrar(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response{
 
         
         $usuario=new Usuarios();
@@ -125,8 +125,6 @@ class LoginController extends AbstractController
                     $perfilAficion = new PerfilAficiones();
                     $perfilAficion->setPerfil($perfil);
                     $perfilAficion->setAficion($aficionSeleccionada);
-            
-                 
                     $entityManager->persist($perfilAficion);
                 }
             }
@@ -141,27 +139,28 @@ class LoginController extends AbstractController
             
             
             if ($imagen) {
-              
                 $nombreArchivo = md5(uniqid()) . '.' . $imagen->guessExtension();
-
                 $rutaImagen = $this->getParameter('kernel.project_dir') . '/public/image';
-                    
                 $imagen->move(
                     $rutaImagen,
                     $nombreArchivo
                 );
-
                 $perfil->setFoto($nombreArchivo);
             }else{
 
                 $nombreArchivo ='img_defecto.jpg';
                 $perfil->setFoto($nombreArchivo);
             }
-
+            
             $entityManager->persist($perfil);
             $entityManager->flush();
 
-            return $this -> redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+            // Iniciar sesión automáticamente
+            $session->set('user_authenticated', true); 
+            $session->set('nombre', $nick);
+            $session->set('imagen', $perfil->getFoto());
+
+            return $this -> redirectToRoute('app_listar', [], Response::HTTP_SEE_OTHER);
                 
             }
            

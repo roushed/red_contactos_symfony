@@ -8,7 +8,7 @@
   {% if usuarios %}
 
   {% if app.session.get('user_authenticated') %}
-    <h2 style='margin-left: 122px;'>Miembros más afines:</h2>
+    <h2 style='margin-left: 122px;'>Usuarios más afines:</h2>
       <div class='usuariosaf'>
       {% if afinidades is not empty %}
         {% for afinidad in afinidades %}
@@ -116,7 +116,6 @@
       data: { edesde: edadDesde, ehasta: edadHasta, genero: genero },
       success: function(response) {
           var html = ''; 
-          console.log(response);
 
           $.each(response.usuarios, function(index, usuario) {
               html += '<div class="usuario">';

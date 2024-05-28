@@ -808,6 +808,9 @@ form button{
   border-radius: 20px;
 }
 
+.aficion-checkbox label{
+  cursor: pointer;
+}
 
 .selected {
   background-color: gray;
@@ -926,6 +929,7 @@ form button{
 .login_text a{
 
   color: white;
+  margin-left: 120px;
   
 }
 
@@ -1240,7 +1244,7 @@ margin-top: 130px;
 
 .act_estructura{
 
-  padding: 20px;
+  padding: 12px;
   justify-content: left;
   display: flex;
   flex-wrap: wrap;

@@ -130,6 +130,10 @@ class AnunciosCategoriaController extends AbstractController
     #[Route('/categorias/insertar/{id}', name: 'app_porcategoria_insertar', methods: ['GET', 'POST'])]
     public function insertar(int $id, Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response{
 
+        if (!$session->has('user_authenticated') || !$session->get('user_authenticated')) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $post=new Posts();
         if($id != 7 && $id != 8 ){
             $form=$this -> createForm(PostCategoriaType::class, $post);

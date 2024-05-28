@@ -121,7 +121,9 @@ class ActividadesController extends AbstractController
 #[Route('/actividades/insertar', name: 'app_actividades_insertar', methods: ['GET', 'POST'])]
     public function insertar(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response{
 
-        
+        if (!$session->has('user_authenticated') || !$session->get('user_authenticated')) {
+            return $this->redirectToRoute('app_login');
+        }
         
         $actividad=new Actividades();
         $form=$this -> createForm(ActividadesType::class, $actividad);

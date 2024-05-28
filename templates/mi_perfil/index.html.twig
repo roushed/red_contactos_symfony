@@ -53,6 +53,7 @@
                 <input type="password" id="password" name="password" class="form-control" value="{{ resultados.password }}" />
                 <span class='text-danger'></span>
             </div>
+            <label for="aficiones">Aficiones seleccionadas:</label>
             <div class="aficiones-container">
                 {% for aficion in listaAficiones %}
                     {% set isChecked = false %}
@@ -93,7 +94,9 @@
         </form>
     </div>
 </div>
-<h2>Mis Anuncios</h2>
+
+{% if posts %}
+<h2 class='mt-4'>Mis Anuncios</h2>
 <div class='ap_estructura'>
     {% for post in posts %}
                 <div class='anunciosperfil'>
@@ -106,7 +109,11 @@
                 </div>
     {% endfor %}
 </div>
-<h2>Mis Actividades</h2>
+
+{% endif %}
+
+{% if actividades %}
+<h2 class='mt-4'>Mis Actividades</h2>
 <div class='act_estructura'>
     {% for actividad in actividades %}
             <div class='actperfil'>
@@ -118,7 +125,7 @@
             </div>
     {% endfor %}
 </div>
-
+{% endif %}
 
 
 <script>
@@ -127,23 +134,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const formcheck=document.querySelectorAll('.aficion-checkbox');
     const fileInput = document.getElementById('file-input');
     const uploadContainer = document.getElementById('upload-container');
-    const perfilId = uploadContainer.dataset.perfilId; // Accede al atributo data-post-id
+    const perfilId = uploadContainer.dataset.perfilId; 
 
 
     formcheck.forEach(boton => {
         boton.addEventListener('click', function(e) {
-            // Encuentra el div .aficion-checkbox desde el elemento clicado
+     
             const aficionCheckbox = e.target.closest('.aficion-checkbox');
             
-            // Si encontramos el div .aficion-checkbox
             if (aficionCheckbox) {
                 var checkbox = aficionCheckbox.querySelector('input[type="checkbox"]');
                 
-                // Cambia el estado del checkbox
                 if (checkbox) {
                     checkbox.checked = !checkbox.checked;
 
-                    // Cambia la clase 'selected' según el estado del checkbox
                     if (checkbox.checked) {
                         aficionCheckbox.classList.add('selected');
                     } else {
@@ -185,10 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteButton.textContent = 'x';
             deleteButton.addEventListener('click', eliminarImagen);
 
-            // Agrega la imagen y el botón de eliminar al mismo contenedor
             imageContainer.appendChild(deleteButton);
-
-            // Agrega el contenedor de la imagen y el botón al contenedor de la galería
             gallery.appendChild(imageContainer);
         });
     })
@@ -212,8 +213,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('El post se eliminó correctamente');
-                    // Eliminar dinámicamente el post de la lista
                     this.closest('.anunciosperfil').remove();
                 } else {
                     console.error('Hubo un error al eliminar el post:', response.statusText);
@@ -244,8 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('La actividad se eliminó correctamente');
-            
+                    
                     this.closest('.actperfil').remove();
                 } else {
                     console.error('Hubo un error al eliminar la actividad:', response.statusText);
@@ -282,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('La imagen se eliminó correctamente');
+                  
                 } else {
                     console.error('Hubo un error al eliminar la imagen:', response.statusText);
                 }
