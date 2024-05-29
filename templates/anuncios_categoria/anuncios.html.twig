@@ -130,7 +130,11 @@
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-    
+  
+  if (event.state && event.state.page) {
+        window.location.reload();
+  }
+
  document.addEventListener('click', function(e) {
     if (e.target.classList.contains('like-btn')) {
   
@@ -164,31 +168,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 handleLikeClick = (likeBtn) => {
     let postId = likeBtn.dataset.postId;
-   
-
-
     let parentElement = likeBtn.parentElement;
     parentElement.removeChild(likeBtn);
+    let unlikeBtn = document.createElement('div');
+    unlikeBtn.className = 'unlike-btn';
+    unlikeBtn.dataset.postId = postId;
 
-  
-      let unlikeBtn = document.createElement('div');
-      unlikeBtn.className = 'unlike-btn';
-      unlikeBtn.dataset.postId = postId;
-    
     parentElement.append(unlikeBtn);
 }
 
 handleUnlikeClick = (unlikeBtn) => {
     let postId = unlikeBtn.dataset.postId;
-   
-
     let parentElement = unlikeBtn.parentElement;
     parentElement.removeChild(unlikeBtn);
-
-  
-      let likeBtn = document.createElement('div');
-      likeBtn.className = 'like-btn';
-      likeBtn.dataset.postId = postId;
+    let likeBtn = document.createElement('div');
+    likeBtn.className = 'like-btn';
+    likeBtn.dataset.postId = postId;
       
     parentElement.append(likeBtn);
     
@@ -199,7 +194,6 @@ document.getElementById('btn-buscar').addEventListener('click', function() {
     var textoBusqueda = document.getElementById('texto-busqueda').value;
     var idCategoria = this.getAttribute('data-categoria');
  
-    
     $.ajax({
         url: '{{ path('buscar_anuncios') }}',
         method: 'GET',
