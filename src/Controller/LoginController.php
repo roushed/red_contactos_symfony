@@ -113,7 +113,7 @@ class LoginController extends AbstractController
             }else{
                 
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $usuario->setOnline(false);
+                $usuario->setOnline(true);
                 $usuario->setFecha($fechaActual);
                 $usuario->setPassword($hashedPassword);
                 $entityManager -> persist($usuario);
@@ -155,7 +155,6 @@ class LoginController extends AbstractController
             $entityManager->persist($perfil);
             $entityManager->flush();
 
-            // Iniciar sesión automáticamente
             $session->set('user_authenticated', true); 
             $session->set('nombre', $nick);
             $session->set('imagen', $perfil->getFoto());

@@ -172,11 +172,94 @@
         }
     };
 
-    const deleteButtons = document.querySelectorAll('.delete-button');
-    deleteButtons.forEach(button => {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
         button.addEventListener('click', eliminarImagen);
     });
+
+    const form = document.getElementById('formEditarArticulo');
+    const subject = document.getElementById('subject');
+    const precio = document.getElementById('precio');
+    const telefono = document.getElementById('telefono');
+    const subjectError = subject.nextElementSibling;
+    const precioError = precio.nextElementSibling;
+    const telefonoError = telefono.nextElementSibling;
+
+    form.addEventListener('submit', function(event) {
+        let valid = true;
+        let focusSet = false; 
+
+        const subjectRegex = /[a-zA-Z]/;
+        if (!subjectRegex.test(subject.value)) {
+            subjectError.textContent = 'El asunto no puede contener solo números.';
+            valid = false;
+            if (!focusSet) {
+                subject.focus();
+                focusSet = true;
+            }
+        } else {
+            subjectError.textContent = '';
+        }
+
+         const precioRegex = /^[0-9]*\.?[0-9]*$/;
+        if (!precioRegex.test(precio.value)) {
+            precioError.textContent = 'El precio debe ser un número válido.';
+            valid = false;
+            if (!focusSet) {
+                precio.focus();
+                focusSet = true;
+            }
+        } else {
+            precioError.textContent = '';
+        }
+
+        if(telefono.value.length != 0){
+            const telefonoRegex = /^[0-9]{9}$/;
+            if (!telefonoRegex.test(telefono.value)) {
+                telefonoError.textContent = 'El teléfono debe ser un número de 9 dígitos.';
+                valid = false;
+                if (!focusSet) {
+                    telefono.focus();
+                    focusSet = true;
+                }
+            } else {
+                telefonoError.textContent = '';
+            }
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }else {  
+           sweetAlert('¡Se ha editado correctamente el Post!');
+        }
+        
+    });
+
 });
+
+    const formp = document.getElementById('formEditarPost');
+    const subjectp = document.getElementById('subject');
+    const subjectErrorp = subject.nextElementSibling;
+   
+    formp.addEventListener('submit', function(event) {
+        let valid = true;
+        const subjectRegex = /[a-zA-Z]/;
+        if (!subjectRegex.test(subjectp.value)) {
+            subjectErrorp.textContent = 'El asunto no puede contener solo números.';
+            valid = false;
+           
+        } else {
+            subjectErrorp.textContent = '';
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }else {
+            sweetAlert('¡Se ha editado correctamente el Post!');
+        }
+    });
+
+
 </script>
 
 {% endblock %}

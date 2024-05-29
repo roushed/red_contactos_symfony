@@ -197,10 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
-
-
-
     const eliminarPost = function(event) {
         
         event.preventDefault();
@@ -261,9 +257,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-
-
-
      const eliminarImagen = function() {
         const imagenId = this.getAttribute('data-imagen-id');
         const confirmar = confirm('¿Estás seguro de que deseas eliminar esta imagen?');
@@ -307,9 +300,77 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+    const form = document.getElementById('formEditarPerfil');
+    const nombre = document.getElementById('nombre');
+    const apellidos = document.getElementById('apellidos');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const nombreError = nombre.nextElementSibling;
+    const apellidosError = apellidos.nextElementSibling;
+    const emailError = email.nextElementSibling.nextElementSibling;
+    const passwordError = password.nextElementSibling;
 
+    form.addEventListener('submit', function(event) {
+        let valid = true;
+        let focusSet = false; 
 
-});
+    
+        const nombreRegex = /^[a-zA-Z\s]+$/;
+        if (!nombreRegex.test(nombre.value)) {
+            nombreError.textContent = 'El nombre no puede contener solo números.';
+            valid = false;
+            if (!focusSet) {
+                nombre.focus();
+                focusSet = true;
+            }
+        } else {
+            nombreError.textContent = '';
+        }
+
+    
+        const apellidosRegex = /^[a-zA-Z\s]+$/;
+        if (!apellidosRegex.test(apellidos.value)) {
+            apellidosError.textContent = 'Los apellidos no pueden contener solo números.';
+            valid = false;
+            if (!focusSet) {
+                apellidos.focus();
+                focusSet = true;
+            }
+        } else {
+            apellidosError.textContent = '';
+        }
+
+    
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value)) {
+            emailError.textContent = 'Formato de email incorrecto.';
+            valid = false;
+            if (!focusSet) {
+                email.focus();
+                focusSet = true;
+            }
+        } else {
+            emailError.textContent = '';
+        }
+
+    
+        const passwordRegex = /^(?=.*[0-9]).{5,}$/;
+        if (!passwordRegex.test(password.value)) {
+            passwordError.textContent = 'La contraseña debe tener al menos 5 caracteres y 1 número.';
+            valid = false;
+            if (!focusSet) {
+                password.focus();
+                focusSet = true;
+            }
+        } else {
+            passwordError.textContent = '';
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+    });
 
 
 </script>

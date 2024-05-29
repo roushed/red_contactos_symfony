@@ -64,8 +64,50 @@
         </form>
     </div>
 </div>
-
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formEditarActividad');
+    const nombre = document.getElementById('nombre');
+    const direccion = document.getElementById('direccion');
+    const nombreError = nombre.nextElementSibling;
+    const direccionError = direccion.nextElementSibling;
+
+    form.addEventListener('submit', function(event) {
+        let valid = true;
+        let focusSet = false; 
+
+        const nombreRegex = /[a-zA-Z]/;
+        if (!nombreRegex.test(nombre.value)) {
+            nombreError.textContent = 'El nombre no puede contener solo números.';
+            valid = false;
+            if (!focusSet) {
+                nombre.focus();
+                focusSet = true;
+            }
+        } else {
+            nombreError.textContent = '';
+        }
+
+        const direccionRegex = /[a-zA-Z]/;
+        if (!direccionRegex.test(direccion.value)) {
+            direccionError.textContent = 'La dirección no puede contener solo números.';
+            valid = false;
+            if (!focusSet) {
+                direccion.focus();
+                focusSet = true;
+            }
+        } else {
+            direccionError.textContent = '';
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }else {
+            sweetAlert('¡Se ha editado correctamente la Actividad!');
+        }
+    });
+});
 
  validarMinimo = (input) => {
     if (input.value < {{ usuarios|length }}) {

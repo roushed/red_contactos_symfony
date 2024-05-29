@@ -180,7 +180,7 @@ class MiPerfilController extends AbstractController
 
                 if ($post->getCategoria()->getId() == 7 || $post->getCategoria()->getId() == 8) {
              
-                    $precio = $request->request->get('precio');
+                    $precio= str_replace('.', '', $request->request->get('precio'));
                     $telefono = $request->request->get('telefono');
                     $municipioId = $request->request->get('municipio');
                     $municipio = $entityManager->getRepository(Municipios::class)->find($municipioId);
