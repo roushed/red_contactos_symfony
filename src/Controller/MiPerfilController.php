@@ -25,6 +25,9 @@ class MiPerfilController extends AbstractController
     #[Route('/mi_perfil', name: 'app_mi_perfil')]
     public function index(EntityManagerInterface $entityManager, Request $request, SessionInterface $session): Response
     {
+        if (!$session->get('user_authenticated')) {
+            return $this->redirectToRoute('app_login');
+        }
         
         $usuario = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $session->get('nombre')]);
         $posts = $entityManager->getRepository(Posts::class)->findBy(['nick' => $usuario]);
@@ -42,20 +45,21 @@ class MiPerfilController extends AbstractController
             'ciudad' => $usuario->getPerfil()->getCiudad(),
             'foto' => $usuario->getPerfil()->getFoto(),
             'descripcion' => $usuario->getPerfil()->getDescripcion(),
-            // Otros datos del usuario...
+         
         ];
 
         $listaAficiones = $entityManager->getRepository(Aficiones::class)->findAll();
         $queryBuilder = $entityManager->createQueryBuilder();
-        $aficionesUsuario = $queryBuilder
-            ->select('af.id, af.nombre')
-            ->from('App\Entity\Aficiones', 'af')
-            ->join('af.perfilAficiones', 'pa')
-            ->join('pa.perfil', 'p')
-            ->where('p.nick = :idUsuario')
-            ->setParameter('idUsuario', $usuario->getId())
-            ->getQuery()
-            ->getResult();
+        
+            $aficionesUsuario = $queryBuilder
+                ->select('af.id, af.nombre')
+                ->from('App\Entity\Aficiones', 'af')
+                ->join('af.perfilAficiones', 'pa')
+                ->join('pa.perfil', 'p')
+                ->where('p.nick = :idUsuario')
+                ->setParameter('idUsuario', $usuario->getId())
+                ->getQuery()
+                ->getResult();
 
             $actividadesUsuario = $entityManager->getRepository(Actividades::class)
             ->createQueryBuilder('a')
@@ -83,7 +87,7 @@ class MiPerfilController extends AbstractController
         #[Route('/editar_perfil', name: 'editar_perfil')]
         public function guardarDatos(EntityManagerInterface $entityManager, Request $request, SessionInterface $session): Response
         {
-           
+         
             $usuario = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $session->get('nombre')]);
             $perfil = $entityManager->getRepository(Perfiles::class)->findOneBy(['nick' => $usuario]);
             $perfilAficiones = $entityManager->getRepository(PerfilAficiones::class)->findBy(['perfil'=>$perfil->getId()]);
@@ -157,10 +161,13 @@ class MiPerfilController extends AbstractController
         }
 
         #[Route('/editar/post/{id}', name: 'editar_post')]
-        public function editarPost(Request $request, int $id, EntityManagerInterface $entityManager): Response
+        public function editarPost(Request $request, int $id, EntityManagerInterface $entityManager, SessionInterface $session): Response
         {
-         
-       
+    
+            if (!$session->get('user_authenticated')) {
+                return $this->redirectToRoute('app_login');
+            }
+
             $post = $entityManager->getRepository(Posts::class)->find($id);
             $municipios = $entityManager->getRepository(Municipios::class)->findAll();
             $imagenes = $entityManager->getRepository(Imagenes::class)->findBy(['post' => $post]);
@@ -216,8 +223,11 @@ class MiPerfilController extends AbstractController
 
 
         #[Route('/editar/actividad/{id}', name: 'editar_actividad')]
-        public function editarActividad(Request $request, int $id, EntityManagerInterface $entityManager): Response
+        public function editarActividad(Request $request, int $id, EntityManagerInterface $entityManager, SessionInterface $session): Response
         {
+            if (!$session->get('user_authenticated')) {
+                return $this->redirectToRoute('app_login');
+            }
        
             $actividad = $entityManager->getRepository(Actividades::class)->find($id);
             $usuarioRepository = $entityManager->getRepository(Usuarios::class);
