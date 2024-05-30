@@ -10,12 +10,16 @@
     <div class="left-column">
         <p><img src="../../image/{{resultados.foto}}" alt="Foto de perfil"></p>
         <div class="gallery">
-            {% for imagen in imagenes %}
-                <div class="image-container">
-                    <img src="../../image/{{imagen.nombre}}" alt="Imagen de galería">
-                    <button class="delete-button" data-imagen-id="{{ imagen.id }}">x</button>
-                </div>
-            {% endfor %}
+            {% if imagenes %}
+                {% for imagen in imagenes %}
+                    <div class="image-container">
+                        <img src="../../image/{{imagen.nombre}}" alt="Imagen de galería">
+                        <button class="delete-button" data-imagen-id="{{ imagen.id }}">x</button>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div>No se encuentra cargada ninguna imágen.</div>
+            {% endif %}
         </div>
         <div id="upload-container" data-perfil-id="{{ resultados.id }}">
             <label for="file-input" id="upload-button">Cargar imagen</label>

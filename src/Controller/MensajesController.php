@@ -130,17 +130,22 @@ class MensajesController extends AbstractController
         $usuarioSeleccionado = $entityManager->getRepository(Usuarios::class)->find($usuarioId);
         
         $conversacion = $mensajesRepository->findConversacion($usuarioActual, $usuarioSeleccionado);
-     
+        $mensajesPorFecha = [];
         foreach ($conversacion as $mensaje) {
+            $fechaMensaje = $mensaje->getFecha()->format('Y-m-d'); // Obtener la fecha del mensaje en formato 'Y-m-d'
+        if (!isset($mensajesPorFecha[$fechaMensaje])) {
+            $mensajesPorFecha[$fechaMensaje] = [];
+        }
+        $mensajesPorFecha[$fechaMensaje][] = $mensaje;
             if ($mensaje->getNickrecibo() === $usuarioActual && !$mensaje->isLeido()) {
                 $mensaje->setLeido(true);
                 $entityManager->persist($mensaje);
             }
         }
         $entityManager->flush();
-
+        
         return $this->render('mensajes/conversacion.html.twig', [
-            'conversacion' => $conversacion,
+            'conversacion' => $mensajesPorFecha,
             'usuario_seleccionado' => $usuarioSeleccionado->getId(),
             'usuario_actual' => $usuarioActual,
             

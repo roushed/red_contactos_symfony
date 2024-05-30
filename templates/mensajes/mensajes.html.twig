@@ -8,10 +8,12 @@
      {% include 'mensajes/mensaje_list.html.twig' %}
 
      <div class='panel_msg'>
-            {{ form_start(form_mensajes, {'attr': {'id': 'form_mensajes'}}) }}
-            {{ form_row(form_mensajes.texto) }}
-            <button type="submit" id="enviarMensaje">Enviar</button>
-            {{ form_end(form_mensajes) }}
+    {{ form_start(form_mensajes, {'attr': {'id': 'form_mensajes'}}) }}
+    <div class="input-container">
+        {{ form_widget(form_mensajes.texto, {'attr': {'class': 'input-text'}}) }}
+        <div><button type="submit" id="enviarMensaje" class="submit-button">Enviar</button></div>
+    </div>
+    {{ form_end(form_mensajes) }}
     </div>
 
 

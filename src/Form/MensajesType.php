@@ -18,7 +18,7 @@ class MensajesType extends AbstractType
         ->add('texto', TextareaType::class, [
             'label' => false,
             'attr' => [
-                'rows' => 5, 
+                'rows' => 4, 
                 'cols' => 100,
             ],
         ])

@@ -250,9 +250,11 @@ class AnunciosCategoriaController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted()) {
+            $fechaActual = new \DateTime();
             $mynick = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $session->get('nombre')]);
             $nuevoComentario->setNick($mynick);
             $nuevoComentario->setPost($post);
+            $nuevoComentario->setFecha($fechaActual);
             $entityManager->persist($nuevoComentario);
             $entityManager->flush();
             $comentarios = $entityManager->getRepository(Comentariosp::class)->getComentarios($id);
@@ -260,7 +262,7 @@ class AnunciosCategoriaController extends AbstractController
             $comentariosHtml = $this->renderView('anuncios_categoria/comentarios.html.twig', ['comentarios' => $comentarios]);
             return new JsonResponse(['comentarios' => $comentariosHtml]);
         }
-      
+
         return $this -> render('anuncios_categoria/ver.html.twig',[
             'id_nick' => $post->getNick()->getId(),
             'nick' => $nick,

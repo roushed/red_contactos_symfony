@@ -1,23 +1,31 @@
-
-{% for mensaje in conversacion %}
-    {% set claseMensaje = mensaje.nickenvia.id == usuario_actual.id ? 'mensaje-usuario-actual' : 'mensaje-otro-usuario' %}
-    <div class="{{ claseMensaje }}">
-    <div class='divmsg' style='display: flex; justify-content: left;'>
-        <div class='divmsg_iz'>
-            {% if mensaje.nickenvia.id != usuario_actual.id %}
-                <img src='../../image/{{ mensaje.nickenvia.perfil.foto }}' style='width: 50px; height: 50px; border-radius: 10px;' alt='{{ mensaje.nickenvia.nick }}'>
-            {% else %} 
-                <img src='../../image/{{ mensaje.nickenvia.perfil.foto }}' style='width: 50px; height: 50px; border-radius: 10px;' alt='{{ mensaje.nickenvia.nick }}'>
-            {% endif %}
-        </div>
-        <div class='divmsg_der' style='margin-left: 10px;'>
-            <div>{{ mensaje.texto }}</div>
-        </div>
-    </div>
+{% for fecha, mensajesEnFecha in conversacion %}
+ <div style="  color: gray; border-radius: 5px; text-align: center; max-width: 150px; margin: auto; margin-bottom: 10px;">
+    <p style="font-size: 14px;">{{ fecha|date('d F Y') }}</p>
 </div>
+    {% for mensaje in mensajesEnFecha %}
+        {% set claseMensaje = mensaje.nickenvia.id == usuario_actual.id ? 'mensaje-usuario-actual' : 'mensaje-otro-usuario' %}
+        <div class="{{ claseMensaje }}">
+            <div class='divmsg' style='display: flex; justify-content: left;'>
+                <div class='divmsg_iz'>
+                    {% if mensaje.nickenvia.id != usuario_actual.id %}
+                        <img src='../../image/{{ mensaje.nickenvia.perfil.foto }}' style='width: 50px; height: 50px; border-radius: 10px;' alt='{{ mensaje.nickenvia.nick }}'>
+                    {% else %} 
+                        <img src='../../image/{{ mensaje.nickenvia.perfil.foto }}' style='width: 50px; height: 50px; border-radius: 10px;' alt='{{ mensaje.nickenvia.nick }}'>
+                    {% endif %}
+                </div>
+                <div class='divmsg_der' style='margin-left: 10px;'>
+                    <div>{{ mensaje.texto }}</div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% else %}
-    <p>No hay mensajes dasdas en la conversación.</p>
+    <p>No hay mensajes en la conversación.</p>
 {% endfor %}
+
+
+
+
 
 
             

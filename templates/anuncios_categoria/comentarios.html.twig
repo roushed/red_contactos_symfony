@@ -8,7 +8,8 @@
                     <img src="../../image/{{comentario.foto}}" alt="Foto de perfil" style="width: 45px; height: 45px; margin-right: 10px; border-radius: 6px;"><br>
                     <b style="margin-left: 4px;">{{ comentario.nick }}</b>
                 </td>
-                <td>{{ comentario.texto }}</td>
+                <td class="text-left" style="width: 80%;">{{ comentario.texto }}</td>
+                <td class="text-right" style="width: 10%;"><small>{{ comentario.fecha|date('d F') }}</small></td>
             </tr>
         {% endfor %}
     </tbody>
@@ -16,5 +17,3 @@
 {% else %}
     <p>No hay comentarios</p>
 {% endif %}
-
-

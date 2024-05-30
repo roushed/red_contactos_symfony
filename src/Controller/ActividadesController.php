@@ -91,9 +91,11 @@ class ActividadesController extends AbstractController
             $form->handleRequest($request);
     
             if ($form->isSubmitted()) {
+                $fechaActual = new \DateTime();
                 $mynick = $entityManager->getRepository(Usuarios::class)->findOneBy(['nick' => $session->get('nombre')]);
                 $nuevoComentario->setNick($mynick);
                 $nuevoComentario->setActividad($actividadc);
+                $nuevoComentario->setFecha($fechaActual);
                 $entityManager->persist($nuevoComentario);
                 $entityManager->flush();
 
@@ -105,7 +107,7 @@ class ActividadesController extends AbstractController
                 return $this->redirectToRoute('app_actividades_ver', ['id' => $actividadc->getId()]);
 
             }
-    
+
         return $this->render('actividades/ver.html.twig', [
             'results' => $actividad,
             'results_u' => $usuarios,

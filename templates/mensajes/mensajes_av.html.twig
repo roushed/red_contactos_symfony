@@ -18,11 +18,13 @@
     </div>
 </div>
     <div class='panel_msg'>
-            {{ form_start(form_mensajes, {'attr': {'id': 'form_mensajes', 'style': 'display: none;'}}) }}
-            {{ form_row(form_mensajes.texto) }}
-            <button type="submit" id="enviarMensaje">Enviar</button>
-            {{ form_end(form_mensajes) }}
+    {{ form_start(form_mensajes, {'attr': {'id': 'form_mensajes', 'style': 'display: none;'}}) }}
+    <div class="input-container">
+        {{ form_row(form_mensajes.texto, {'attr': {'class': 'input-text'}}) }}
+        <button type="submit" id="enviarMensaje" class="submit-button">Enviar</button>
     </div>
+    {{ form_end(form_mensajes) }}
+</div>
  
 
 

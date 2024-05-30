@@ -656,7 +656,7 @@ form button{
 }
 
 .panel {
-  margin: 0 auto;
+  
   display: flex;
   justify-content: center;
 }
@@ -745,11 +745,34 @@ form button{
 }
 
 .panel_msg{
-
-  text-align: center;
+  text-align: left;
   margin-top: 12px;
-  margin-left: 175px;
+  margin-left: 180px;
 }
+
+.input-container .input-text {
+  margin: 0;
+  flex: 1;
+}
+
+.input-container .submit-button {
+  margin: 0;
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  padding: 8px 8px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.input-container .submit-button:hover {
+  background-color: gray;
+  color: black;
+}
+
+
 
 
 
@@ -1563,6 +1586,7 @@ margin-top: 130px;
 .baja a{
   color: black;
 }
+
 
 
 
