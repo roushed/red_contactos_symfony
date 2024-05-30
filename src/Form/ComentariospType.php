@@ -18,7 +18,7 @@ class ComentariospType extends AbstractType
         ->add('texto', TextareaType::class, [
             'label' => false,
             'attr' => [
-                'rows' => 12,
+                'rows' => 6,
                 'cols' => 84, 
             ],
         ])
