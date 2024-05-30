@@ -132,7 +132,7 @@ class MensajesController extends AbstractController
         $conversacion = $mensajesRepository->findConversacion($usuarioActual, $usuarioSeleccionado);
         $mensajesPorFecha = [];
         foreach ($conversacion as $mensaje) {
-            $fechaMensaje = $mensaje->getFecha()->format('Y-m-d'); // Obtener la fecha del mensaje en formato 'Y-m-d'
+            $fechaMensaje = $mensaje->getFecha()->format('Y-m-d'); 
         if (!isset($mensajesPorFecha[$fechaMensaje])) {
             $mensajesPorFecha[$fechaMensaje] = [];
         }
