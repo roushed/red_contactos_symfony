@@ -8,7 +8,7 @@
 {% set age = (today|date('Y') - birthdate|date('Y'))|trim('0', 'left') %}
 <div class="profile-container">
     <div class="left-column">
-        <p><img src="../../image/{{resultados.foto}}" alt="Foto de perfil"></p>
+        <p><a href="/usuarios/ver/{{resultados.id}}"><img src="../../image/{{resultados.foto}}" alt="Foto de perfil"></a></p>
         <div class="gallery">
             {% if imagenes %}
                 {% for imagen in imagenes %}

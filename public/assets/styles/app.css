@@ -532,7 +532,7 @@ height: 9px;
   
 
   .perfil_der{
-    margin-left: 24px;
+    margin-left: 14px;
   }
 
   .perfilg{
@@ -565,6 +565,7 @@ height: 9px;
   }
 
   .btn_msg{
+    width: 130px;
     text-align: center;
     margin-top: 25px;
     background-color: black;
