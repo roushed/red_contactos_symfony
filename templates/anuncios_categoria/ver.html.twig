@@ -73,7 +73,7 @@
                             <span class='ico_heart'><img src='../../image/corazonw_icon.png'></span> 
                             <span class='txt_act'>{{likescount}}</span>
                     </div>
-                     <div>Publicado {{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }} {{ post.fecha|date('Y') }}</div>
+                     <div class='mt-3'>Publicado {{ post.fecha|date('d') }} {{meses[post.fecha|date('F')] }} {{ post.fecha|date('Y') }}</div>
                      {% if imagenes is not empty %}
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     
