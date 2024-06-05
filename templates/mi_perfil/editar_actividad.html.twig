@@ -28,7 +28,7 @@
 
             <div class="form-group">
                 <label for="cantidad">Nº Inscritos</label>
-                <input type="number" id="cantidad" name="cantidad" class="form-control" min="{{ usuarios|length }}" value="{{ usuarios|length }}" oninput="validarMinimo(this)" />
+                <input type="number" id="cantidad" name="cantidad" class="form-control" min="{{ usuarios|length }}" value="{{ actividad.npersonas }}" oninput="validarMinimo(this)" />
                 <span class='text-danger'></span>
             </div>
 
